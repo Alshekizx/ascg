@@ -1,0 +1,80 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600;700&display=swap');
+@import 'tailwindcss';
+
+@theme {
+  --color-navy: #1B2A56;
+  --color-navy-dark: #111B3A;
+  --color-navy-light: #243570;
+  --color-gold: #B8963E;
+  --color-gold-light: #D4AE5A;
+  --color-gold-dark: #96790F;
+  --color-cream: #F8F7F4;
+  --color-stone: #EDE9E0;
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+}
+
+:root {
+  --background: #F8F7F4;
+  --foreground: #1B2A56;
+  --card: #FFFFFF;
+  --card-foreground: #1B2A56;
+  --primary: #1B2A56;
+  --primary-foreground: #FFFFFF;
+  --secondary: #F1EFE8;
+  --secondary-foreground: #1B2A56;
+  --muted: #EDE9E0;
+  --muted-foreground: #6B7280;
+  --accent: #B8963E;
+  --accent-foreground: #FFFFFF;
+  --border: #DDD9CE;
+  --ring: #B8963E;
+  --radius: 0.25rem;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--background);
+  color: var(--foreground);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, h5 {
+  font-family: var(--font-display);
+}
+
+.gold-divider {
+  width: 60px;
+  height: 2px;
+  background: var(--color-gold);
+  margin: 0 auto;
+}
+
+.gold-divider-left {
+  width: 60px;
+  height: 2px;
+  background: var(--color-gold);
+}
+
+.section-label {
+  font-family: var(--font-body);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-gold);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--color-gold); }
