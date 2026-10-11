@@ -45,6 +45,9 @@ export default function HomePage() {
         <div className="absolute left-0 top-0 bottom-0 w-1" style={{ background: 'linear-gradient(to bottom, transparent, #B8963E, transparent)' }} />
 
         <div className="relative z-10 max-w-7xl mx-auto px-6 py-32 text-center">
+          <p className="mx-auto mb-10 max-w-4xl rounded-lg border-2 border-amber-300 bg-amber-100 px-6 py-6 text-2xl font-extrabold leading-snug text-slate-950 md:text-4xl">
+            This is Just a prototype. website is under construction
+          </p>
           <img src={logoImg} alt="ASGC Logo" className="w-24 h-24 object-contain mx-auto mb-8 drop-shadow-2xl" />
           <p className="section-label mb-4" style={{ color: '#B8963E' }}>Abuja, Nigeria · Est. 2024</p>
           <h1
