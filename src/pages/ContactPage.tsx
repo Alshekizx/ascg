@@ -81,8 +81,8 @@ export default function ContactPage() {
                   </svg>
                 ),
                 label: 'Telephone',
-                content: '+234 913 800 0004\n+234 913 800 0005',
-                href: 'tel:+2349138000004',
+                content: '+234 805 757 6575',
+                href: 'tel:+2348057576575',
               },
             ].map((item) => (
               <div key={item.label} className="flex gap-4">

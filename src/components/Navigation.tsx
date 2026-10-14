@@ -146,8 +146,8 @@ export default function Navigation() {
                 info@asgc.us.com
               </a>
               <span className="text-white/30">|</span>
-              <a href="tel:+2349138000004" className="text-xs text-white/60 hover:text-amber-300 transition-colors">
-                +234 913 800 0004
+              <a href="tel:+2348057576575" className="text-xs text-white/60 hover:text-amber-300 transition-colors">
+                +234 805 757 6575
               </a>
             </div>
           </div>

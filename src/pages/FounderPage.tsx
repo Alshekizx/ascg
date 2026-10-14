@@ -196,11 +196,11 @@ export default function FounderPage() {
                 ceo@asgc.us.com
               </a>
               <a
-                href="tel:+2349138000004"
+                href="tel:+2348057576575"
                 className="inline-flex items-center gap-2 px-6 py-2.5 text-sm font-semibold rounded border"
                 style={{ borderColor: 'rgba(255,255,255,0.3)', color: '#fff' }}
               >
-                +234 913 800 0004
+                +234 805 757 6575
               </a>
             </div>
           </div>
