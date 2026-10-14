@@ -23,9 +23,6 @@ const stats = [
 function DashboardView() {
   return (
     <div>
-      <p className="mb-6 rounded-lg border-2 border-amber-300 bg-amber-100 px-6 py-6 text-center text-2xl font-extrabold leading-snug text-slate-950 md:text-4xl">
-        This is Just a prototype. website is under construction
-      </p>
       <h2 className="text-2xl font-bold mb-6" style={{ fontFamily: 'var(--font-display)', color: '#1B2A56' }}>
         Overview
       </h2>
@@ -216,9 +213,6 @@ export default function AdminPage() {
         style={{ background: 'linear-gradient(135deg, #111B3A 0%, #1B2A56 100%)' }}
       >
         <div className="w-full max-w-sm">
-          <p className="mb-8 rounded-lg border-2 border-amber-300 bg-amber-100 px-6 py-6 text-center text-2xl font-extrabold leading-snug text-slate-950">
-            This is Just a prototype. website is under construction
-          </p>
           <div className="text-center mb-8">
             <img src={logoImg} alt="ASGC" className="w-16 h-16 object-contain mx-auto mb-4" />
             <h1 className="text-xl font-bold text-white" style={{ fontFamily: 'var(--font-display)' }}>ASGC Admin</h1>
