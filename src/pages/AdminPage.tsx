@@ -1,5 +1,5 @@
 import { useState } from 'react';
-const logoImg = '/ASGC_White_Logo.png';
+const logoImg = '/ASGC_colored_logo.png';
 
 type AdminView = 'dashboard' | 'news' | 'events' | 'programmes' | 'publications' | 'media' | 'users';
 
@@ -214,7 +214,7 @@ export default function AdminPage() {
       >
         <div className="w-full max-w-sm">
           <div className="text-center mb-8">
-            <img src={logoImg} alt="ASGC" className="w-16 h-16 object-contain mx-auto mb-4" />
+            <img src={logoImg} alt="ASGC" className="w-24 h-24 object-contain mx-auto mb-4 bg-white rounded-lg p-2" />
             <h1 className="text-xl font-bold text-white" style={{ fontFamily: 'var(--font-display)' }}>ASGC Admin</h1>
             <p className="text-white/50 text-xs mt-1">Content Management Dashboard</p>
           </div>
@@ -266,7 +266,7 @@ export default function AdminPage() {
         style={{ backgroundColor: '#1B2A56', minHeight: '100vh' }}
       >
         <div className="flex items-center gap-2.5 p-5 border-b" style={{ borderColor: 'rgba(255,255,255,0.1)' }}>
-          <img src={logoImg} alt="ASGC" className="w-8 h-8 object-contain" />
+          <img src="/ASGC_White_Logo.png" alt="ASGC" className="w-8 h-8 object-contain" />
           <div>
             <p className="text-white text-xs font-bold">ASGC</p>
             <p className="text-white/40 text-[10px]">Admin CMS</p>

@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { articles } from '../data/articles';
-const logoImg = '/ASGC_White_Logo.png';
+const logoImg = '/ASGC_colored_logo.png';
 
 const heroImg = 'https://images.unsplash.com/photo-1590274853856-f22d5ee3d228?w=1800&h=900&fit=crop&auto=format';
 const meetingImg = 'https://images.unsplash.com/photo-1739298061707-cefee19941b7?w=800&h=600&fit=crop&auto=format';
@@ -45,7 +45,7 @@ export default function HomePage() {
         <div className="absolute left-0 top-0 bottom-0 w-1" style={{ background: 'linear-gradient(to bottom, transparent, #B8963E, transparent)' }} />
 
         <div className="relative z-10 max-w-7xl mx-auto px-6 py-32 text-center">
-          <img src={logoImg} alt="ASGC Logo" className="w-24 h-24 object-contain mx-auto mb-8 drop-shadow-2xl" />
+          <img src={logoImg} alt="ASGC Logo" className="w-36 h-36 object-contain mx-auto mb-8 bg-white rounded-xl p-3 shadow-xl" />
           <p className="section-label mb-4" style={{ color: '#B8963E' }}>Abuja, Nigeria · Est. 2024</p>
           <h1
             className="text-4xl md:text-6xl lg:text-7xl font-bold text-white leading-tight mb-6"
