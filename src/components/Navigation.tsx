@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-const logoImg = '/ASGC_colored_logo.png';
+const logoImg = '/ASGC_White_Logo.png';
 
 type NavLink = { label: string; to: string; children?: { label: string; to: string }[] };
 
@@ -158,7 +158,7 @@ export default function Navigation() {
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
             <Link to="/" className="flex items-center gap-3 flex-shrink-0">
-              <img src={logoImg} alt="ASGC Logo" className="h-12 w-12 object-contain bg-white rounded-md p-1" />
+              <img src={logoImg} alt="ASGC Logo" className="h-12 w-12 object-contain" />
               <div className="hidden sm:block">
                 <div className="text-white font-bold text-sm leading-tight" style={{ fontFamily: 'var(--font-display)' }}>
                   ASGC
