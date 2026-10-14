@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import AnimatedStatistic from '../components/AnimatedStatistic';
 import { articles } from '../data/articles';
 const logoImg = '/ASGC_colored_logo.png';
 
@@ -112,10 +113,7 @@ export default function HomePage() {
                   { val: '20+', label: 'Active Programmes' },
                   { val: '500+', label: 'Beneficiaries' },
                 ].map((stat) => (
-                  <div key={stat.label}>
-                    <p className="text-3xl font-bold" style={{ fontFamily: 'var(--font-display)', color: '#B8963E' }}>{stat.val}</p>
-                    <p className="text-sm text-gray-500 mt-0.5">{stat.label}</p>
-                  </div>
+                  <AnimatedStatistic key={stat.label} value={stat.val} label={stat.label} />
                 ))}
               </div>
               <Link
