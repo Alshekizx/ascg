@@ -282,7 +282,7 @@ export default function HomePage() {
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div className="relative">
               <img
-                src="https://images.unsplash.com/photo-1739285452644-3a2c009112fe?w=700&h=800&fit=crop&auto=format"
+                src="/amb_sule_photo.png"
                 alt="Ambassador Ahmed Sule"
                 className="rounded-sm w-full object-cover"
                 style={{ height: '500px' }}

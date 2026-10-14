@@ -80,7 +80,7 @@ export default function FounderPage() {
           <div className="lg:w-1/3 flex-shrink-0">
             <div className="relative">
               <img
-                src="https://images.unsplash.com/photo-1739285452644-3a2c009112fe?w=500&h=600&fit=crop&auto=format"
+                src="/amb_sule_photo.png"
                 alt="Ambassador Ahmed Sule"
                 className="rounded-sm w-full object-cover shadow-2xl"
                 style={{ height: '420px', maxWidth: '340px' }}
