@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { articles } from '../data/articles';
-import logoImg from '../assets/asgc-attachment-1.png';
+const logoImg = '/ASGC_White_Logo.png';
 
 const heroImg = 'https://images.unsplash.com/photo-1590274853856-f22d5ee3d228?w=1800&h=900&fit=crop&auto=format';
 const meetingImg = 'https://images.unsplash.com/photo-1739298061707-cefee19941b7?w=800&h=600&fit=crop&auto=format';

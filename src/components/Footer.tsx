@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import logoImg from '../assets/asgc-attachment-1.png';
+const logoImg = '/ASGC_White_Logo.png';
 
 export default function Footer() {
   return (

@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import logoImg from '../assets/asgc-attachment-1.png';
+const logoImg = '/ASGC_White_Logo.png';
 
 type NavLink = { label: string; to: string; children?: { label: string; to: string }[] };
 

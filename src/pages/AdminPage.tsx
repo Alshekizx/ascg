@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import logoImg from '../assets/asgc-attachment-1.png';
+const logoImg = '/ASGC_White_Logo.png';
 
 type AdminView = 'dashboard' | 'news' | 'events' | 'programmes' | 'publications' | 'media' | 'users';
 
