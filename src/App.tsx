@@ -1,3 +1,4 @@
+import LoadingIndicator from './components/LoadingIndicator';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import Navigation from './components/Navigation';
 import Footer from './components/Footer';
@@ -20,13 +21,16 @@ function Layout() {
   const isAdmin = location.pathname.startsWith('/admin');
 
   if (isAdmin) {
-    return <Routes>
+    return <>
+      <LoadingIndicator navigationKey={location.pathname + location.search} />
+      <Routes>
       <Route path="/admin" element={<AdminPage />} />
-    </Routes>;
+    </Routes></>;
   }
 
   return (
     <>
+      <LoadingIndicator navigationKey={location.pathname + location.search} />
       <Navigation />
       <main>
         <Routes>
