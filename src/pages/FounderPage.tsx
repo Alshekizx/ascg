@@ -189,11 +189,11 @@ export default function FounderPage() {
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <a
-                href="mailto:ahmedsule@gmail.com"
+                href="mailto:ceo@asgc.us.com"
                 className="inline-flex items-center gap-2 px-6 py-2.5 text-sm font-semibold rounded"
                 style={{ backgroundColor: '#B8963E', color: '#fff' }}
               >
-                ahmedsule@gmail.com
+                ceo@asgc.us.com
               </a>
               <a
                 href="tel:+2349138000004"

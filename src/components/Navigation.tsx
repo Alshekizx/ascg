@@ -142,8 +142,8 @@ export default function Navigation() {
               House 18A, Idris Salmaho Street, Life Camp, Abuja, Nigeria
             </p>
             <div className="flex items-center gap-4">
-              <a href="mailto:ahmedsule@gmail.com" className="text-xs text-white/60 hover:text-amber-300 transition-colors">
-                ahmedsule@gmail.com
+              <a href="mailto:info@asgc.us.com" className="text-xs text-white/60 hover:text-amber-300 transition-colors">
+                info@asgc.us.com
               </a>
               <span className="text-white/30">|</span>
               <a href="tel:+2349138000004" className="text-xs text-white/60 hover:text-amber-300 transition-colors">
