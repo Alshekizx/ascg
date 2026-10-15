@@ -1,6 +1,10 @@
-import { safeLink } from "../lib/safeLink"
-import { useContent } from "../lib/useContent"
-import { useState } from "react"
+import type { Photo, Press, Speech, Coverage } from "../types/content";
+import { usePageData } from "../lib/usePageData";
+import type { MediaPageData } from "../types/pages";
+import ContentStatus from "../components/ContentStatus";
+import { safeLink } from "../lib/safeLink";
+import { useContent } from "../lib/useContent";
+import { useState } from "react";
 
 const tabs = [
   "Photos",
@@ -8,120 +12,43 @@ const tabs = [
   "Press Releases",
   "Speeches",
   "Media Coverage",
-]
-
-const initialPhotos = [
-  {
-    img: "https://images.unsplash.com/photo-1590274853856-f22d5ee3d228?w=600&h=400&fit=crop&auto=format",
-    caption: "ASGC Diplomatic Dialogue Forum, Abuja 2026",
-    album: "Events",
-  },
-  {
-    img: "https://images.unsplash.com/photo-1739298061707-cefee19941b7?w=600&h=400&fit=crop&auto=format",
-    caption: "Africa Trade & Investment Symposium, Lagos 2026",
-    album: "Events",
-  },
-  {
-    img: "https://images.unsplash.com/photo-1739298061740-5ed03045b280?w=600&h=400&fit=crop&auto=format",
-    caption: "Economic Diplomacy Training Workshop, Abuja 2026",
-    album: "Programmes",
-  },
-  {
-    img: "https://images.unsplash.com/photo-1739285452644-3a2c009112fe?w=600&h=400&fit=crop&auto=format",
-    caption: "Ambassador Ahmed Sule – Diplomatic engagement",
-    album: "Leadership",
-  },
-  {
-    img: "https://images.unsplash.com/photo-1633095975779-fd354aa0dc95?w=600&h=400&fit=crop&auto=format",
-    caption: "Nigeria–Gulf Cooperation Forum, Abuja 2026",
-    album: "Events",
-  },
-  {
-    img: "https://images.unsplash.com/photo-1590274853856-f22d5ee3d228?w=600&h=400&fit=crop&auto=format",
-    caption: "ASGC Partnerships and Cooperation Dialogue",
-    album: "Partnerships",
-  },
-]
-
-const initialPressReleases = [
-  {
-    date: "September 10, 2026",
-    title: "ASGC Announces Nigeria–Gulf Cooperation Forum 2026",
-    excerpt:
-      "The Ahmed Sule Global Centre for Diplomacy, Trade and Investment announces its flagship Nigeria–Gulf Cooperation Forum, to be held on 15 October 2026 in Abuja.",
-  },
-  {
-    date: "August 5, 2026",
-    title: "ASGC Publishes Policy Brief on West African Investment Frameworks",
-    excerpt:
-      "ASGC has released its latest policy brief, examining responsible investment standards and opportunities across West Africa.",
-  },
-  {
-    date: "July 1, 2026",
-    title: "ASGC Launches Inaugural Economic Diplomacy Training Programme",
-    excerpt:
-      "The Centre has launched its inaugural Economic Diplomacy Training Programme, targeting young professionals across Nigeria.",
-  },
-]
-
-const initialSpeeches = [
-  {
-    date: "February 2026",
-    title: "Nigeria's Diplomatic Priorities in a Changing World",
-    speaker: "Ambassador Ahmed Sule",
-    event: "ASGC Diplomacy & Trade Forum",
-  },
-  {
-    date: "March 2026",
-    title: "Opening Remarks: Economic Diplomacy Training Workshop",
-    speaker: "Ambassador Ahmed Sule",
-    event: "ASGC Training Programme Launch",
-  },
-]
-
-const initialMediaCoverage = [
-  {
-    date: "September 2026",
-    outlet: "This Day",
-    title:
-      "ASGC Emerges as Key Voice on Nigeria's Trade and Investment Diplomacy",
-  },
-  {
-    date: "August 2026",
-    outlet: "The Punch",
-    title:
-      "New Policy Brief Charts Course for Responsible Investment in West Africa",
-  },
-  {
-    date: "July 2026",
-    outlet: "Business Day",
-    title: "ASGC Trains Young Professionals in Economic Diplomacy",
-  },
-]
+];
 
 export default function MediaPage() {
+  const {
+    page,
+    loading: pageLoading,
+    error: pageError,
+  } = usePageData<MediaPageData>("media");
+  const blocks = page?.blocks ?? {};
+  const arrays = page?.arrays ?? {};
+  const values = page?.values ?? {};
+
   const { items: videos } = useContent<{
-    title: string
-    url: string
-    description: string
-  }>("video", [])
-  const { items: photos } = useContent("photo", initialPhotos)
-  const { items: pressReleases } = useContent(
-    "press",
-    initialPressReleases.map((item) => ({ ...item, body: "" })),
-  )
-  const { items: speeches } = useContent(
-    "speech",
-    initialSpeeches.map((item) => ({ ...item, file: "" })),
-  )
-  const { items: mediaCoverage } = useContent(
-    "coverage",
-    initialMediaCoverage.map((item) => ({ ...item, url: "" })),
-  )
+    title: string;
+    url: string;
+    description: string;
+  }>("video");
+  const { items: photos } = useContent<Photo>("photo");
+  const { items: pressReleases } = useContent<Press>("press");
+  const { items: speeches } = useContent<Speech>("speech");
+  const { items: mediaCoverage } = useContent<Coverage>("coverage");
 
-  const [activeTab, setActiveTab] = useState("Photos")
-  const [lightboxImg, setLightboxImg] = useState<string | null>(null)
+  const [activeTab, setActiveTab] = useState("Photos");
+  const [lightboxImg, setLightboxImg] = useState<string | null>(null);
 
+  if (!page)
+    return (
+      <div className="pt-28 min-h-[50vh]">
+        <ContentStatus
+          loading={pageLoading}
+          error={
+            pageError ||
+            (!pageLoading ? "This page has no published content yet." : "")
+          }
+        />
+      </div>
+    );
   return (
     <div className="pt-20">
       {/* Header */}
@@ -139,11 +66,10 @@ export default function MediaPage() {
             className="text-4xl md:text-5xl font-bold text-white mb-4"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            Media & Gallery
+            {blocks.heading_3}
           </h1>
           <p className="text-white/60 text-lg max-w-2xl">
-            Photos, videos, press releases, speeches and media coverage from
-            ASGC's activities and engagements.
+            {blocks.paragraph_1}
           </p>
         </div>
       </div>
@@ -210,7 +136,7 @@ export default function MediaPage() {
         {activeTab === "Videos" && (
           <div className="grid sm:grid-cols-2 gap-6">
             {videos.length === 0 && (
-              <p className="text-gray-500">No videos published yet.</p>
+              <p className="text-gray-500">{blocks.paragraph_2}</p>
             )}
             {videos.map((video) => (
               <article
@@ -388,5 +314,5 @@ export default function MediaPage() {
         </div>
       )}
     </div>
-  )
+  );
 }

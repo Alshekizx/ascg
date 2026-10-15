@@ -1,29 +1,31 @@
-import { useState } from "react"
-import { submitEnquiry } from "../lib/supabase"
-import { Link } from "react-router-dom"
-const logoImg = "/ASGC_White_Logo.png"
+import { safeLink } from "../lib/safeLink";
+import { useSettings } from "../lib/useSettings";
+import { useState } from "react";
+import { submitEnquiry } from "../lib/supabase";
+import { Link } from "react-router-dom";
 
 export default function Footer() {
-  const [email, setEmail] = useState("")
-  const [subscribing, setSubscribing] = useState(false)
-  const [subscriptionMessage, setSubscriptionMessage] = useState("")
+  const { settings } = useSettings();
+  const [email, setEmail] = useState("");
+  const [subscribing, setSubscribing] = useState(false);
+  const [subscriptionMessage, setSubscriptionMessage] = useState("");
   const subscribe = async (event: React.FormEvent) => {
-    event.preventDefault()
-    if (subscribing) return
-    setSubscribing(true)
-    setSubscriptionMessage("")
+    event.preventDefault();
+    if (subscribing) return;
+    setSubscribing(true);
+    setSubscriptionMessage("");
     try {
-      await submitEnquiry("newsletter", { email })
-      setSubscriptionMessage("Thank you for subscribing to ASGC updates.")
-      setEmail("")
+      await submitEnquiry("newsletter", { email });
+      setSubscriptionMessage("Thank you for subscribing to ASGC updates.");
+      setEmail("");
     } catch (error) {
       setSubscriptionMessage(
         error instanceof Error ? error.message : "Please try again.",
-      )
+      );
     } finally {
-      setSubscribing(false)
+      setSubscribing(false);
     }
-  }
+  };
   return (
     <footer style={{ backgroundColor: "#111B3A", color: "#fff" }}>
       {/* Newsletter strip */}
@@ -86,7 +88,7 @@ export default function Footer() {
           <div className="lg:col-span-1">
             <div className="flex items-center gap-3 mb-4">
               <img
-                src={logoImg}
+                src={settings?.footerLogo}
                 alt="ASGC"
                 className="h-14 w-14 object-contain"
               />
@@ -98,41 +100,42 @@ export default function Footer() {
                   ASGC
                 </div>
                 <div className="text-white/50 text-[10px] uppercase tracking-wider leading-tight">
-                  Ahmed Sule Global Centre
+                  {settings?.shortName}
                 </div>
               </div>
             </div>
             <p className="text-xs text-white/50 leading-relaxed mb-3">
-              Ahmed Sule Global Centre for Diplomacy, Trade and Investment
+              {settings?.fullName}
             </p>
             <p className="text-xs italic" style={{ color: "#B8963E" }}>
-              "Connecting Nations. Advancing Trade. Inspiring Investment."
+              {settings?.tagline}
             </p>
             <p className="text-xs text-white/40 mt-3 leading-relaxed">
-              An independent, nonpartisan, nonprofit organisation serving
-              Nigeria, Africa and the global community.
+              {settings?.description}
             </p>
             <div className="flex gap-3 mt-5">
-              {["twitter", "linkedin", "facebook", "instagram"].map((sn) => (
-                <a
-                  key={sn}
-                  href="#"
-                  className="w-8 h-8 rounded flex items-center justify-center transition-all hover:opacity-80"
-                  style={{
-                    backgroundColor: "rgba(255,255,255,0.08)",
-                    color: "#B8963E",
-                  }}
-                  aria-label={sn}
-                >
-                  <svg
-                    className="w-3.5 h-3.5"
-                    fill="currentColor"
-                    viewBox="0 0 24 24"
+              {(["twitter", "linkedin", "facebook", "instagram"] as const)
+                .filter((sn) => safeLink(settings?.[sn]))
+                .map((sn) => (
+                  <a
+                    key={sn}
+                    href={safeLink(settings?.[sn])}
+                    className="w-8 h-8 rounded flex items-center justify-center transition-all hover:opacity-80"
+                    style={{
+                      backgroundColor: "rgba(255,255,255,0.08)",
+                      color: "#B8963E",
+                    }}
+                    aria-label={sn}
                   >
-                    <circle cx="12" cy="12" r="2" />
-                  </svg>
-                </a>
-              ))}
+                    <svg
+                      className="w-3.5 h-3.5"
+                      fill="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle cx="12" cy="12" r="2" />
+                    </svg>
+                  </a>
+                ))}
             </div>
           </div>
 
@@ -190,24 +193,6 @@ export default function Footer() {
                 </li>
               ))}
             </ul>
-            <h4
-              className="text-xs font-semibold uppercase tracking-widest mt-6 mb-4"
-              style={{ color: "#B8963E", fontFamily: "var(--font-body)" }}
-            >
-              Legal
-            </h4>
-            <ul className="space-y-2.5">
-              {["Privacy Policy", "Terms of Use"].map((item) => (
-                <li key={item}>
-                  <a
-                    href="#"
-                    className="text-xs text-white/60 hover:text-white transition-colors"
-                  >
-                    {item}
-                  </a>
-                </li>
-              ))}
-            </ul>
           </div>
 
           {/* Contact */}
@@ -241,11 +226,7 @@ export default function Footer() {
                   />
                 </svg>
                 <p className="text-xs text-white/60 leading-relaxed">
-                  House 18A, Idris Salmaho Street,
-                  <br />
-                  off Lovett Close, Life Camp,
-                  <br />
-                  Abuja, Nigeria
+                  {settings?.address}
                 </p>
               </div>
               <div className="flex gap-3">
@@ -265,16 +246,16 @@ export default function Footer() {
                 </svg>
                 <div className="flex flex-col gap-1">
                   <a
-                    href="mailto:info@asgc.us.com"
+                    href={`mailto:${settings?.email ?? ""}`}
                     className="text-xs text-white/60 hover:text-white transition-colors"
                   >
-                    info@asgc.us.com
+                    {settings?.email}
                   </a>
                   <a
-                    href="mailto:ceo@asgc.us.com"
+                    href={`mailto:${settings?.ceoEmail ?? ""}`}
                     className="text-xs text-white/60 hover:text-white transition-colors"
                   >
-                    ceo@asgc.us.com
+                    {settings?.ceoEmail}
                   </a>
                 </div>
               </div>
@@ -295,10 +276,10 @@ export default function Footer() {
                 </svg>
                 <div className="text-xs text-white/60">
                   <a
-                    href="tel:+2348057576575"
+                    href={`tel:${(settings?.phone ?? "").replace(/[^+\d]/g, "")}`}
                     className="hover:text-white transition-colors block"
                   >
-                    +234 805 757 6575
+                    {settings?.phone}
                   </a>
                 </div>
               </div>
@@ -312,7 +293,7 @@ export default function Footer() {
             className="text-xs text-white/40"
             style={{ fontFamily: "var(--font-body)" }}
           >
-            © {new Date().getFullYear()} Ahmed Sule Global Centre for Diplomacy,
+            © {new Date().getFullYear()} {settings?.shortName} for Diplomacy,
             Trade and Investment. All rights reserved.
           </p>
           <p className="text-xs text-white/30">
@@ -322,5 +303,5 @@ export default function Footer() {
         </div>
       </div>
     </footer>
-  )
+  );
 }

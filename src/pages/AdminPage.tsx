@@ -1,5 +1,7 @@
+import { useSettings } from "../lib/useSettings";
 export default function AdminPage() {
-  const adminUrl = import.meta.env.VITE_ADMIN_URL
+  const { settings } = useSettings();
+  const adminUrl = settings?.adminUrl || import.meta.env.VITE_ADMIN_URL;
   return (
     <main className="min-h-screen flex flex-col items-center justify-center p-6 bg-[#0d1e35] text-white text-center gap-6">
       <img src="/ASGC_White_Logo.png" alt="ASGC" className="w-32" />
@@ -11,5 +13,5 @@ export default function AdminPage() {
         </a>
       )}
     </main>
-  )
+  );
 }

@@ -1,37 +1,49 @@
-import { useState } from "react"
-import { Link } from "react-router-dom"
-import { articles as initialArticles } from "../data/articles"
-import { useContent } from "../lib/useContent"
-import ContentStatus from "../components/ContentStatus"
-
-const categories = [
-  "All",
-  "Diplomacy",
-  "Trade",
-  "Investment",
-  "Policy",
-  "ASGC News",
-  "International Cooperation",
-  "Commentary",
-]
+import type { Article } from "../types/content";
+import { usePageData } from "../lib/usePageData";
+import type { NewsPageData } from "../types/pages";
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import { useContent } from "../lib/useContent";
+import ContentStatus from "../components/ContentStatus";
 
 export default function NewsPage() {
   const {
-    items: articles,
-    loading,
-    error,
-  } = useContent("news", initialArticles)
+    page,
+    loading: pageLoading,
+    error: pageError,
+  } = usePageData<NewsPageData>("news");
+  const blocks = page?.blocks ?? {};
+  const arrays = page?.arrays ?? {};
+  const values = page?.values ?? {};
 
-  const [activeCategory, setActiveCategory] = useState("All")
+  const { items: articles, loading, error } = useContent<Article>("news");
+
+  const categories = [
+    "All",
+    ...new Set(articles.map((article) => article.category)),
+  ];
+  const [activeCategory, setActiveCategory] = useState("All");
 
   const featured =
-    activeCategory === "All" ? articles.find((a) => a.featured) : undefined
+    activeCategory === "All" ? articles.find((a) => a.featured) : undefined;
   const regular = articles.filter(
     (a) =>
       a.slug !== featured?.slug &&
       (activeCategory === "All" || a.category === activeCategory),
-  )
+  );
 
+  if (!page)
+    return (
+      <div className="pt-28 min-h-[50vh]">
+        <ContentStatus
+          loading={pageLoading}
+          error={
+            pageError ||
+            (!pageLoading ? "This page has no published content yet." : "")
+          }
+        />
+      </div>
+    );
   return (
     <div className="pt-20">
       <ContentStatus loading={loading} error={error} />
@@ -50,11 +62,10 @@ export default function NewsPage() {
             className="text-4xl md:text-5xl font-bold text-white mb-4"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            News & Insights
+            {blocks.heading_3}
           </h1>
           <p className="text-white/60 text-lg max-w-2xl">
-            Analysis, reporting and commentary from ASGC on diplomacy, trade,
-            investment and international cooperation.
+            {blocks.paragraph_1}
           </p>
         </div>
       </div>
@@ -182,10 +193,10 @@ export default function NewsPage() {
 
         {regular.length === 0 && (
           <div className="text-center py-16">
-            <p className="text-gray-400">No articles in this category yet.</p>
+            <p className="text-gray-400">{blocks.paragraph_2}</p>
           </div>
         )}
       </div>
     </div>
-  )
+  );
 }

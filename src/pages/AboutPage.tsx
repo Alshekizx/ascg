@@ -1,29 +1,57 @@
-import { Link } from 'react-router-dom';
-
-const coreValues = [
-  { icon: '⚖️', title: 'Integrity', desc: 'Honesty, transparency and ethical conduct in all our work.' },
-  { icon: '📋', title: 'Accountability', desc: 'Responsible stewardship of trust, resources and relationships.' },
-  { icon: '🏛️', title: 'Independence', desc: 'Free from partisan, commercial or political interference.' },
-  { icon: '🌍', title: 'Public Service', desc: 'Committed to the public good of Nigeria, Africa and the world.' },
-  { icon: '🤝', title: 'Cooperation', desc: 'Building bridges across nations, institutions and communities.' },
-  { icon: '💡', title: 'Excellence', desc: 'Pursuing the highest standards in research, dialogue and delivery.' },
-];
+import { LeadershipDirectory } from "../components/Directory";
+import { usePageData } from "../lib/usePageData";
+import type { AboutPageData } from "../types/pages";
+import ContentStatus from "../components/ContentStatus";
+import { Link } from "react-router-dom";
 
 export default function AboutPage() {
+  const {
+    page,
+    loading: pageLoading,
+    error: pageError,
+  } = usePageData<AboutPageData>("about");
+  const blocks = page?.blocks ?? {};
+  const arrays = page?.arrays ?? {};
+  const values = page?.values ?? {};
+  const coreValues = arrays.coreValues ?? [];
+
+  if (!page)
+    return (
+      <div className="pt-28 min-h-[50vh]">
+        <ContentStatus
+          loading={pageLoading}
+          error={
+            pageError ||
+            (!pageLoading ? "This page has no published content yet." : "")
+          }
+        />
+      </div>
+    );
   return (
     <div className="pt-20">
       {/* Page header */}
-      <div className="py-20 px-6" style={{ background: 'linear-gradient(135deg, #1B2A56 0%, #111B3A 100%)' }}>
+      <div
+        className="py-20 px-6"
+        style={{
+          background: "linear-gradient(135deg, #1B2A56 0%, #111B3A 100%)",
+        }}
+      >
         <div className="max-w-7xl mx-auto">
-          <p className="section-label mb-3" style={{ color: '#B8963E' }}>About</p>
-          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4" style={{ fontFamily: 'var(--font-display)' }}>
-            About ASGC
+          <p className="section-label mb-3" style={{ color: "#B8963E" }}>
+            About
+          </p>
+          <h1
+            className="text-4xl md:text-5xl font-bold text-white mb-4"
+            style={{ fontFamily: "var(--font-display)" }}
+          >
+            {blocks.heading_10}
           </h1>
           <p className="text-white/60 text-lg max-w-2xl">
-            An independent, nonpartisan, nonprofit organisation advancing international cooperation and inclusive development.
+            {blocks.paragraph_1}
           </p>
         </div>
       </div>
+      <LeadershipDirectory />
 
       {/* Overview */}
       <section className="py-20 px-6 bg-white">
@@ -31,34 +59,41 @@ export default function AboutPage() {
           <div>
             <p className="section-label mb-3">Overview</p>
             <div className="gold-divider-left mb-6" />
-            <h2 className="text-3xl font-bold mb-6" style={{ fontFamily: 'var(--font-display)', color: '#1B2A56' }}>
-              Our Identity and Purpose
+            <h2
+              className="text-3xl font-bold mb-6"
+              style={{ fontFamily: "var(--font-display)", color: "#1B2A56" }}
+            >
+              {blocks.heading_2}
             </h2>
             <div className="space-y-4 text-gray-600 leading-relaxed">
-              <p>
-                The Ahmed Sule Global Centre for Diplomacy, Trade and Investment — known by its acronym ASGC, or AS Global Centre — is an independent, nonpartisan, nonprofit organisation based in Abuja, Nigeria.
-              </p>
-              <p>
-                ASGC is dedicated to advancing international cooperation, inclusive economic development and peaceful relations through diplomacy, trade and responsible investment. The Centre serves Nigeria, Africa and the global community.
-              </p>
-              <p>
-                Founded by Ambassador Ahmed Sule, a senior career diplomat with extensive international experience, ASGC draws on deep knowledge of how governments work, how international relationships develop and how diplomatic engagement can support national and economic priorities.
-              </p>
+              <p>{blocks.paragraph_3}</p>
+              <p>{blocks.paragraph_4}</p>
+              <p>{blocks.paragraph_5}</p>
             </div>
           </div>
           <div className="space-y-5">
-            {[
-              { label: 'Full Name', val: 'Ahmed Sule Global Centre for Diplomacy, Trade and Investment' },
-              { label: 'Acronym', val: 'ASGC — Ahmed Sule Global Centre' },
-              { label: 'Short Brand Name', val: 'AS Global Centre' },
-              { label: 'Type', val: 'Independent, Nonpartisan, Nonprofit Organisation' },
-              { label: 'Headquarters', val: 'Abuja, Nigeria' },
-              { label: 'Service Area', val: 'Nigeria, Africa and the Global Community' },
-            ].map((item) => (
-              <div key={item.label} className="flex gap-4 p-4 rounded-sm" style={{ backgroundColor: '#F8F7F4', borderLeft: '3px solid #B8963E' }}>
+            {(arrays.items_1 ?? []).map((item) => (
+              <div
+                key={item.label}
+                className="flex gap-4 p-4 rounded-sm"
+                style={{
+                  backgroundColor: "#F8F7F4",
+                  borderLeft: "3px solid #B8963E",
+                }}
+              >
                 <div>
-                  <p className="text-xs font-semibold uppercase tracking-wider mb-1" style={{ color: '#B8963E' }}>{item.label}</p>
-                  <p className="text-sm font-medium" style={{ color: '#1B2A56' }}>{item.val}</p>
+                  <p
+                    className="text-xs font-semibold uppercase tracking-wider mb-1"
+                    style={{ color: "#B8963E" }}
+                  >
+                    {item.label}
+                  </p>
+                  <p
+                    className="text-sm font-medium"
+                    style={{ color: "#1B2A56" }}
+                  >
+                    {item.val}
+                  </p>
                 </div>
               </div>
             ))}
@@ -67,25 +102,56 @@ export default function AboutPage() {
       </section>
 
       {/* Vision & Mission */}
-      <section className="py-20 px-6" style={{ backgroundColor: '#1B2A56' }}>
+      <section className="py-20 px-6" style={{ backgroundColor: "#1B2A56" }}>
         <div className="max-w-7xl mx-auto">
           <div className="grid md:grid-cols-2 gap-8">
-            <div className="p-10 rounded-sm" style={{ backgroundColor: 'rgba(255,255,255,0.05)', border: '1px solid rgba(184,150,62,0.25)' }}>
-              <div className="w-12 h-12 rounded-sm flex items-center justify-center mb-6 text-2xl" style={{ backgroundColor: 'rgba(184,150,62,0.15)' }}>
+            <div
+              className="p-10 rounded-sm"
+              style={{
+                backgroundColor: "rgba(255,255,255,0.05)",
+                border: "1px solid rgba(184,150,62,0.25)",
+              }}
+            >
+              <div
+                className="w-12 h-12 rounded-sm flex items-center justify-center mb-6 text-2xl"
+                style={{ backgroundColor: "rgba(184,150,62,0.15)" }}
+              >
                 👁️
               </div>
-              <h3 className="text-2xl font-bold text-white mb-4" style={{ fontFamily: 'var(--font-display)' }}>Vision</h3>
-              <p className="text-white/80 text-lg italic leading-relaxed" style={{ fontFamily: 'var(--font-display)' }}>
-                "A peaceful, connected and prosperous global community where cooperation creates inclusive opportunities and shared progress."
+              <h3
+                className="text-2xl font-bold text-white mb-4"
+                style={{ fontFamily: "var(--font-display)" }}
+              >
+                {blocks.heading_11}
+              </h3>
+              <p
+                className="text-white/80 text-lg italic leading-relaxed"
+                style={{ fontFamily: "var(--font-display)" }}
+              >
+                {blocks.paragraph_6}
               </p>
             </div>
-            <div className="p-10 rounded-sm" style={{ backgroundColor: 'rgba(255,255,255,0.05)', border: '1px solid rgba(184,150,62,0.25)' }}>
-              <div className="w-12 h-12 rounded-sm flex items-center justify-center mb-6 text-2xl" style={{ backgroundColor: 'rgba(184,150,62,0.15)' }}>
+            <div
+              className="p-10 rounded-sm"
+              style={{
+                backgroundColor: "rgba(255,255,255,0.05)",
+                border: "1px solid rgba(184,150,62,0.25)",
+              }}
+            >
+              <div
+                className="w-12 h-12 rounded-sm flex items-center justify-center mb-6 text-2xl"
+                style={{ backgroundColor: "rgba(184,150,62,0.15)" }}
+              >
                 🎯
               </div>
-              <h3 className="text-2xl font-bold text-white mb-4" style={{ fontFamily: 'var(--font-display)' }}>Mission</h3>
+              <h3
+                className="text-2xl font-bold text-white mb-4"
+                style={{ fontFamily: "var(--font-display)" }}
+              >
+                {blocks.heading_12}
+              </h3>
               <p className="text-white/80 leading-relaxed">
-                To serve Nigeria, Africa and the global community by advancing diplomatic dialogue, inclusive trade and responsible investment through research, capacity building and strategic partnerships that deliver measurable public benefit.
+                {blocks.paragraph_7}
               </p>
             </div>
           </div>
@@ -98,13 +164,33 @@ export default function AboutPage() {
           <div className="text-center mb-14">
             <p className="section-label mb-3">What Guides Us</p>
             <div className="gold-divider mb-5" />
-            <h2 className="text-3xl font-bold" style={{ fontFamily: 'var(--font-display)', color: '#1B2A56' }}>Core Values</h2>
+            <h2
+              className="text-3xl font-bold"
+              style={{ fontFamily: "var(--font-display)", color: "#1B2A56" }}
+            >
+              {blocks.heading_13}
+            </h2>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {coreValues.map((v) => (
-              <div key={v.title} className="p-7 rounded-sm" style={{ backgroundColor: '#F8F7F4', border: '1px solid #EDE9E0' }}>
+              <div
+                key={v.title}
+                className="p-7 rounded-sm"
+                style={{
+                  backgroundColor: "#F8F7F4",
+                  border: "1px solid #EDE9E0",
+                }}
+              >
                 <div className="text-3xl mb-4">{v.icon}</div>
-                <h3 className="font-bold mb-2" style={{ fontFamily: 'var(--font-display)', color: '#1B2A56' }}>{v.title}</h3>
+                <h3
+                  className="font-bold mb-2"
+                  style={{
+                    fontFamily: "var(--font-display)",
+                    color: "#1B2A56",
+                  }}
+                >
+                  {v.title}
+                </h3>
                 <p className="text-sm text-gray-600">{v.desc}</p>
               </div>
             ))}
@@ -113,18 +199,22 @@ export default function AboutPage() {
       </section>
 
       {/* Nonprofit commitment */}
-      <section className="py-16 px-6" style={{ backgroundColor: '#F8F7F4' }}>
+      <section className="py-16 px-6" style={{ backgroundColor: "#F8F7F4" }}>
         <div className="max-w-3xl mx-auto text-center">
-          <p className="section-label mb-3">Nonprofit Commitment</p>
+          <p className="section-label mb-3">{blocks.paragraph_8}</p>
           <div className="gold-divider mb-6" />
           <p className="text-gray-600 leading-relaxed text-base">
-            The Centre shall apply its income, grants, donations and any programme surplus solely to its mission and objectives. No profit or surplus shall be distributed to its founders, trustees or members. Its activities shall be guided by integrity, accountability, independence and service to the public.
+            {blocks.paragraph_9}
           </p>
           <div className="mt-8">
             <Link
               to="/our-work"
               className="inline-flex items-center gap-2 px-8 py-3.5 font-semibold text-sm rounded transition-all hover:opacity-90"
-              style={{ backgroundColor: '#1B2A56', color: '#fff', fontFamily: 'var(--font-body)' }}
+              style={{
+                backgroundColor: "#1B2A56",
+                color: "#fff",
+                fontFamily: "var(--font-body)",
+              }}
             >
               Explore Our Mandate
             </Link>

@@ -1,36 +1,42 @@
-import LoadingIndicator from './components/LoadingIndicator';
-import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
-import Navigation from './components/Navigation';
-import Footer from './components/Footer';
-import HomePage from './pages/HomePage';
-import AboutPage from './pages/AboutPage';
-import OurWorkPage from './pages/OurWorkPage';
-import FounderPage from './pages/FounderPage';
-import ProgrammesPage from './pages/ProgrammesPage';
-import NewsPage from './pages/NewsPage';
-import ArticlePage from './pages/ArticlePage';
-import EventsPage from './pages/EventsPage';
-import PublicationsPage from './pages/PublicationsPage';
-import MediaPage from './pages/MediaPage';
-import PartnershipsPage from './pages/PartnershipsPage';
-import ContactPage from './pages/ContactPage';
-import AdminPage from './pages/AdminPage';
+import DynamicPage from "./pages/DynamicPage";
+import SiteMetadata from "./components/SiteMetadata";
+import LoadingIndicator from "./components/LoadingIndicator";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import Navigation from "./components/Navigation";
+import Footer from "./components/Footer";
+import HomePage from "./pages/HomePage";
+import AboutPage from "./pages/AboutPage";
+import OurWorkPage from "./pages/OurWorkPage";
+import FounderPage from "./pages/FounderPage";
+import ProgrammesPage from "./pages/ProgrammesPage";
+import NewsPage from "./pages/NewsPage";
+import ArticlePage from "./pages/ArticlePage";
+import EventsPage from "./pages/EventsPage";
+import PublicationsPage from "./pages/PublicationsPage";
+import MediaPage from "./pages/MediaPage";
+import PartnershipsPage from "./pages/PartnershipsPage";
+import ContactPage from "./pages/ContactPage";
+import AdminPage from "./pages/AdminPage";
 
 function Layout() {
   const location = useLocation();
-  const isAdmin = location.pathname.startsWith('/admin');
+  const isAdmin = /^\/admin\/?$/.test(location.pathname);
 
   if (isAdmin) {
-    return <>
-      <LoadingIndicator navigationKey={location.pathname + location.search} />
-      <Routes>
-      <Route path="/admin" element={<AdminPage />} />
-    </Routes></>;
+    return (
+      <>
+        <LoadingIndicator navigationKey={location.pathname + location.search} />
+        <Routes>
+          <Route path="/admin" element={<AdminPage />} />
+        </Routes>
+      </>
+    );
   }
 
   return (
     <>
       <LoadingIndicator navigationKey={location.pathname + location.search} />
+      <SiteMetadata />
       <Navigation />
       <main>
         <Routes>
@@ -46,6 +52,7 @@ function Layout() {
           <Route path="/media" element={<MediaPage />} />
           <Route path="/partnerships" element={<PartnershipsPage />} />
           <Route path="/contact" element={<ContactPage />} />
+          <Route path="*" element={<DynamicPage />} />
         </Routes>
       </main>
       <Footer />

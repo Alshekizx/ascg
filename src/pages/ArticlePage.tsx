@@ -1,38 +1,37 @@
-import { useEffect, useState } from "react"
-import { Link, useParams } from "react-router-dom"
-import { articles as initialArticles } from "../data/articles"
-import { useContent } from "../lib/useContent"
-import ContentStatus from "../components/ContentStatus"
+import type { Article } from "../types/content";
+import { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
+import { useContent } from "../lib/useContent";
+import ContentStatus from "../components/ContentStatus";
 
 export default function ArticlePage() {
-  const {
-    items: articles,
-    loading,
-    error,
-  } = useContent("news", initialArticles)
+  const { items: articles, loading, error } = useContent<Article>("news");
 
-  const { slug } = useParams()
-  const article = articles.find((item) => item.slug === slug)
-  const [shareStatus, setShareStatus] = useState("")
+  const { slug } = useParams();
+  const article = articles.find((item) => item.slug === slug);
+  const [shareStatus, setShareStatus] = useState("");
 
   useEffect(() => {
-    setShareStatus("")
-    window.scrollTo({ top: 0, behavior: "instant" })
-    const previousTitle = document.title
+    setShareStatus("");
+    window.scrollTo({ top: 0, behavior: "instant" });
+  }, [slug]);
+  useEffect(() => {
+    if (loading) return;
+    const previousTitle = document.title;
     document.title = article
       ? `${article.title} | ASGC`
-      : "Article not found | ASGC"
+      : "Article not found | ASGC";
     return () => {
-      document.title = previousTitle
-    }
-  }, [article])
+      document.title = previousTitle;
+    };
+  }, [article?.title, loading]);
 
   if (loading)
     return (
       <div className="pt-40 min-h-screen">
         <ContentStatus loading={loading} error={error} />
       </div>
-    )
+    );
   if (!article)
     return (
       <section className="px-6 pt-44 pb-24 text-center min-h-[65vh]">
@@ -48,21 +47,21 @@ export default function ArticlePage() {
           Browse all stories
         </Link>
       </section>
-    )
+    );
 
   const related = articles
     .filter((item) => item.slug !== article.slug)
-    .slice(0, 3)
+    .slice(0, 3);
   const copyLink = async () => {
     try {
-      await navigator.clipboard.writeText(window.location.href)
-      setShareStatus("Article link copied.")
+      await navigator.clipboard.writeText(window.location.href);
+      setShareStatus("Article link copied.");
     } catch {
       setShareStatus(
         "Copy the page address from your browser to share this article.",
-      )
+      );
     }
-  }
+  };
 
   return (
     <div className="pt-28 lg:pt-36 bg-cream">
@@ -269,5 +268,5 @@ export default function ArticlePage() {
         </div>
       </section>
     </div>
-  )
+  );
 }

@@ -1,108 +1,53 @@
-import { safeLink } from "../lib/safeLink"
-import { useContent } from "../lib/useContent"
-import { useState } from "react"
-
-const pubTypes = [
-  "All",
-  "Policy Brief",
-  "Research Paper",
-  "Report",
-  "Speech",
-  "Newsletter",
-]
-const years = ["All Years", "2026", "2025"]
-
-const initialPublications = [
-  {
-    title:
-      "Responsible Investment in West Africa: Principles, Frameworks and Opportunities",
-    type: "Policy Brief",
-    year: "2026",
-    author: "ASGC Research Unit",
-    date: "August 2026",
-    summary:
-      "An examination of responsible investment standards and their application across the West African economic landscape, with recommendations for policy and practice.",
-    pages: "22 pages",
-    img: "https://images.unsplash.com/photo-1590274853856-f22d5ee3d228?w=400&h=550&fit=crop&auto=format",
-  },
-  {
-    title:
-      "AfCFTA and the Path to Inclusive African Trade: Policy Perspectives for Nigeria",
-    type: "Policy Brief",
-    year: "2026",
-    author: "ASGC Policy Team",
-    date: "June 2026",
-    summary:
-      "This brief analyses the implications of the African Continental Free Trade Area for Nigerian exporters, SMEs and policymakers, identifying opportunities and structural barriers.",
-    pages: "18 pages",
-    img: "https://images.unsplash.com/photo-1739298061740-5ed03045b280?w=400&h=550&fit=crop&auto=format",
-  },
-  {
-    title: "Economic Diplomacy and the Role of Nigerian Missions Abroad",
-    type: "Research Paper",
-    year: "2026",
-    author: "Ambassador Ahmed Sule",
-    date: "April 2026",
-    summary:
-      "A practitioner's analysis of how Nigerian diplomatic missions can be more effectively structured to advance economic diplomacy, trade promotion and investment attraction.",
-    pages: "34 pages",
-    img: "https://images.unsplash.com/photo-1739285452644-3a2c009112fe?w=400&h=550&fit=crop&auto=format",
-  },
-  {
-    title: "ASGC Annual Review 2025–2026",
-    type: "Report",
-    year: "2026",
-    author: "ASGC",
-    date: "March 2026",
-    summary:
-      "The inaugural annual review of ASGC's programmes, activities, partnerships and impact across its mandate areas of diplomacy, trade, investment, research and capacity building.",
-    pages: "48 pages",
-    img: "https://images.unsplash.com/photo-1633095975779-fd354aa0dc95?w=400&h=550&fit=crop&auto=format",
-  },
-  {
-    title:
-      "Keynote Address: Nigeria's Diplomatic Priorities in a Changing World",
-    type: "Speech",
-    year: "2026",
-    author: "Ambassador Ahmed Sule",
-    date: "February 2026",
-    summary:
-      "Keynote address delivered at the ASGC Diplomacy & Trade Forum, outlining Nigeria's diplomatic priorities and the role of institutions like ASGC in supporting national interests.",
-    pages: "8 pages",
-    img: "https://images.unsplash.com/photo-1739298061707-cefee19941b7?w=400&h=550&fit=crop&auto=format",
-  },
-  {
-    title: "ASGC Newsletter — Issue 1",
-    type: "Newsletter",
-    year: "2026",
-    author: "ASGC Communications",
-    date: "January 2026",
-    summary:
-      "The first issue of the ASGC newsletter, covering the Centre's establishment, founding mandate, initial programmes and upcoming activities for 2026.",
-    pages: "12 pages",
-    img: "https://images.unsplash.com/photo-1590274853856-f22d5ee3d228?w=400&h=550&fit=crop&auto=format",
-  },
-]
+import type { Publication } from "../types/content";
+import { usePageData } from "../lib/usePageData";
+import type { PublicationsPageData } from "../types/pages";
+import ContentStatus from "../components/ContentStatus";
+import { safeLink } from "../lib/safeLink";
+import { useContent } from "../lib/useContent";
+import { useState } from "react";
 
 export default function PublicationsPage() {
-  const { items: publications } = useContent(
-    "publication",
-    initialPublications.map((item) => ({ ...item, file: "" })),
-  )
+  const {
+    page,
+    loading: pageLoading,
+    error: pageError,
+  } = usePageData<PublicationsPageData>("publications");
+  const blocks = page?.blocks ?? {};
+  const arrays = page?.arrays ?? {};
+  const values = page?.values ?? {};
 
-  const [activeType, setActiveType] = useState("All")
-  const [activeYear, setActiveYear] = useState("All Years")
-  const [search, setSearch] = useState("")
+  const { items: publications } = useContent<Publication>("publication");
+
+  const pubTypes = ["All", ...new Set(publications.map((item) => item.type))];
+  const years = [
+    "All Years",
+    ...new Set(publications.map((item) => item.year)),
+  ];
+  const [activeType, setActiveType] = useState("All");
+  const [activeYear, setActiveYear] = useState("All Years");
+  const [search, setSearch] = useState("");
 
   const filtered = publications.filter((p) => {
-    const matchType = activeType === "All" || p.type === activeType
-    const matchYear = activeYear === "All Years" || p.year === activeYear
+    const matchType = activeType === "All" || p.type === activeType;
+    const matchYear = activeYear === "All Years" || p.year === activeYear;
     const matchSearch =
       p.title.toLowerCase().includes(search.toLowerCase()) ||
-      p.author.toLowerCase().includes(search.toLowerCase())
-    return matchType && matchYear && matchSearch
-  })
+      p.author.toLowerCase().includes(search.toLowerCase());
+    return matchType && matchYear && matchSearch;
+  });
 
+  if (!page)
+    return (
+      <div className="pt-28 min-h-[50vh]">
+        <ContentStatus
+          loading={pageLoading}
+          error={
+            pageError ||
+            (!pageLoading ? "This page has no published content yet." : "")
+          }
+        />
+      </div>
+    );
   return (
     <div className="pt-20">
       {/* Header */}
@@ -114,17 +59,16 @@ export default function PublicationsPage() {
       >
         <div className="max-w-7xl mx-auto">
           <p className="section-label mb-3" style={{ color: "#B8963E" }}>
-            Research & Knowledge
+            {blocks.paragraph_1}
           </p>
           <h1
             className="text-4xl md:text-5xl font-bold text-white mb-4"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            Publications & Research
+            {blocks.heading_2}
           </h1>
           <p className="text-white/60 text-lg max-w-2xl">
-            Policy briefs, research papers, reports, speeches and newsletters
-            from the ASGC research and policy team.
+            {blocks.paragraph_3}
           </p>
         </div>
       </div>
@@ -277,7 +221,7 @@ export default function PublicationsPage() {
                     </a>
                   ) : (
                     <p className="text-xs text-gray-500">
-                      Contact ASGC for this publication.
+                      {blocks.paragraph_4}
                     </p>
                   )}
                 </div>
@@ -286,13 +230,11 @@ export default function PublicationsPage() {
           </div>
           {filtered.length === 0 && (
             <div className="text-center py-16">
-              <p className="text-gray-400">
-                No publications matching your criteria.
-              </p>
+              <p className="text-gray-400">{blocks.paragraph_5}</p>
             </div>
           )}
         </div>
       </section>
     </div>
-  )
+  );
 }

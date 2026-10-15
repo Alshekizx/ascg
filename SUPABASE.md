@@ -1,7 +1,9 @@
-This website reads published news, publications, and media from the shared Supabase project `szrrdgiivhfhvugemvfu`. Contact enquiries, partnership enquiries, and newsletter subscriptions save to that project's private submissions table.
+All editable website content comes from the shared ASGC Supabase project `szrrdgiivhfhvugemvfu`: page text and lists, events, programmes, news, publications, leadership, partners, media and website settings. No local sample-data fallback remains.
 
-The database setup and administrator-access script are in the admin repository under `supabase/`. That setup was applied on 14 October 2026 and verified against the live project. Both websites use the same publishable key; a secret or service-role key must never be used in the browser.
+Contact, partnership and newsletter forms save private submissions. Event registration uses the database RPC to check registration availability, duplicates and capacity. Success is displayed only after the database acknowledges the write. Failed submissions preserve typed input.
 
-Optional Vercel environment overrides are documented in `.env.example`. Set `VITE_ADMIN_URL` to the actual admin website URL to enable the secure administration link at `/admin`.
+`useContent` shares live responses between components and refreshes via realtime, focus and polling. Homepage counters use aggregate database statistics. Founder details are shared leadership records. Contact details, brand images, social links and map destination are shared website settings. Blank social destinations and placeholder legal links are removed. Additional published pages resolve by their URL name.
 
-Form success messages are shown only after Supabase confirms the save. Failed submissions preserve the user's input and display an error. Published content refreshes on navigation, realtime updates, focus, and every 30 seconds.
+Browser code uses the publishable key. Private messages and account data are not readable by public visitors. Database migrations, fixture cleanup, the protected account-management function and the audit report are in the admin repository under `supabase/`.
+
+Temporary test records are intentionally present in Supabase and marked for later cleanup. No secret or service-role key is stored in the frontend.

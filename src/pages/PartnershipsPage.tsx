@@ -1,51 +1,22 @@
-import { submitEnquiry } from "../lib/supabase"
-import { useState } from "react"
-
-const partnerTypes = [
-  {
-    icon: "🏛️",
-    title: "Diplomatic Institutions",
-    desc: "Foreign missions, high commissions, consulates and diplomatic training institutions. ASGC welcomes structured engagement with diplomatic institutions to advance shared priorities in international cooperation.",
-  },
-  {
-    icon: "🎓",
-    title: "Universities & Research Institutions",
-    desc: "ASGC partners with universities and research institutions to co-produce knowledge, host scholars, support research programmes and deliver academic exchanges in diplomacy, trade and development.",
-  },
-  {
-    icon: "🌍",
-    title: "Development Organisations",
-    desc: "International development organisations, multilateral agencies and NGOs working on economic development, trade facilitation, investment promotion and governance are priority partners for ASGC.",
-  },
-  {
-    icon: "🌐",
-    title: "Diaspora Networks",
-    desc: "Nigerian and African diaspora organisations and networks are integral to ASGC's mission. The Centre engages diaspora communities as connectors, investors, advocates and contributors to homeland development.",
-  },
-  {
-    icon: "💼",
-    title: "Private Sector",
-    desc: "Businesses, industry associations, investors and entrepreneurs committed to ethical practices, job creation and community benefit are welcomed as ASGC programme partners and collaborators.",
-  },
-  {
-    icon: "🤝",
-    title: "Civil Society",
-    desc: "Non-governmental organisations, think tanks, advocacy groups and community organisations contribute perspectives essential to ASGC's inclusive approach to diplomacy, trade and investment.",
-  },
-]
-
-const opportunities = [
-  "Programme co-design and joint delivery",
-  "Research and policy collaboration",
-  "Event co-sponsorship and hosting",
-  "Staff exchanges and fellowships",
-  "Joint publications and knowledge products",
-  "Funding and philanthropic support",
-  "Mentorship and capacity building",
-  "Advocacy and policy engagement",
-]
+import { PartnerDirectory } from "../components/Directory";
+import { usePageData } from "../lib/usePageData";
+import type { PartnershipsPageData } from "../types/pages";
+import ContentStatus from "../components/ContentStatus";
+import { submitEnquiry } from "../lib/supabase";
+import { useState } from "react";
 
 export default function PartnershipsPage() {
+  const {
+    page,
+    loading: pageLoading,
+    error: pageError,
+  } = usePageData<PartnershipsPageData>("partnerships");
+  const blocks = page?.blocks ?? {};
+  const arrays = page?.arrays ?? {};
+  const values = page?.values ?? {};
+  const partnerTypes = arrays.partnerTypes ?? [];
+  const opportunities = arrays.opportunities ?? [];
+
   const [formData, setFormData] = useState({
     name: "",
     org: "",
@@ -53,29 +24,41 @@ export default function PartnershipsPage() {
     phone: "",
     type: "",
     message: "",
-  })
-  const [submitted, setSubmitted] = useState(false)
+  });
+  const [submitted, setSubmitted] = useState(false);
 
-  const [sending, setSending] = useState(false)
-  const [submitError, setSubmitError] = useState("")
+  const [sending, setSending] = useState(false);
+  const [submitError, setSubmitError] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    if (sending) return
-    setSending(true)
-    setSubmitError("")
+    e.preventDefault();
+    if (sending) return;
+    setSending(true);
+    setSubmitError("");
     try {
-      await submitEnquiry("partnership", formData)
-      setSubmitted(true)
+      await submitEnquiry("partnership", formData);
+      setSubmitted(true);
     } catch (error) {
       setSubmitError(
         error instanceof Error ? error.message : "Please try again.",
-      )
+      );
     } finally {
-      setSending(false)
+      setSending(false);
     }
-  }
+  };
 
+  if (!page)
+    return (
+      <div className="pt-28 min-h-[50vh]">
+        <ContentStatus
+          loading={pageLoading}
+          error={
+            pageError ||
+            (!pageLoading ? "This page has no published content yet." : "")
+          }
+        />
+      </div>
+    );
   return (
     <div className="pt-20">
       {/* Header */}
@@ -93,15 +76,14 @@ export default function PartnershipsPage() {
             className="text-4xl md:text-5xl font-bold text-white mb-4"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            Strategic Partnerships
+            {blocks.heading_1}
           </h1>
           <p className="text-white/60 text-lg max-w-2xl">
-            ASGC works with universities, development organisations, diplomatic
-            institutions, diaspora networks and the private sector to implement
-            programmes serving the public good.
+            {blocks.paragraph_2}
           </p>
         </div>
       </div>
+      <PartnerDirectory />
 
       {/* Partner types */}
       <section className="py-24 px-6 bg-white">
@@ -113,11 +95,10 @@ export default function PartnershipsPage() {
               className="text-3xl font-bold"
               style={{ fontFamily: "var(--font-display)", color: "#1B2A56" }}
             >
-              Partnership Areas
+              {blocks.heading_11}
             </h2>
             <p className="text-gray-500 max-w-xl mx-auto mt-3">
-              ASGC's organisational mandate specifically identifies the
-              following as partnership areas.
+              {blocks.paragraph_3}
             </p>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -156,20 +137,17 @@ export default function PartnershipsPage() {
           <div className="grid lg:grid-cols-2 gap-14 items-center">
             <div>
               <p className="section-label mb-3" style={{ color: "#B8963E" }}>
-                How We Work Together
+                {blocks.paragraph_4}
               </p>
               <div className="gold-divider-left mb-6" />
               <h2
                 className="text-3xl font-bold text-white mb-6"
                 style={{ fontFamily: "var(--font-display)" }}
               >
-                Collaboration Opportunities
+                {blocks.heading_5}
               </h2>
               <p className="text-white/70 leading-relaxed mb-8">
-                ASGC welcomes purposeful partnerships that serve the public
-                good. Partnership arrangements are structured around mutual
-                benefit, shared values and measurable outcomes. The following
-                forms of collaboration are currently available.
+                {blocks.paragraph_6}
               </p>
               <div className="grid grid-cols-2 gap-3">
                 {opportunities.map((op) => (
@@ -194,21 +172,13 @@ export default function PartnershipsPage() {
                 className="text-xl font-bold text-white mb-2"
                 style={{ fontFamily: "var(--font-display)" }}
               >
-                ASGC Partnership Approach
+                {blocks.heading_7}
               </h3>
               <p className="text-white/60 text-sm mb-6 leading-relaxed">
-                All ASGC partnerships are guided by the Centre's core values of
-                integrity, accountability, independence and public service.
-                Prospective partners are welcome to initiate a conversation
-                using the enquiry form on this page.
+                {blocks.paragraph_8}
               </p>
               <div className="space-y-4">
-                {[
-                  "Aligned values and public benefit orientation",
-                  "Clear shared objectives and expected outcomes",
-                  "Mutual commitment of time, expertise or resources",
-                  "Accountability and transparency in programme delivery",
-                ].map((item) => (
+                {(arrays.items_1 ?? []).map((item) => (
                   <div key={item} className="flex items-start gap-3">
                     <svg
                       className="w-4 h-4 flex-shrink-0 mt-0.5"
@@ -243,12 +213,9 @@ export default function PartnershipsPage() {
               className="text-3xl font-bold"
               style={{ fontFamily: "var(--font-display)", color: "#1B2A56" }}
             >
-              Partner With ASGC
+              {blocks.heading_12}
             </h2>
-            <p className="text-gray-500 mt-3">
-              Submit an enquiry and a member of the ASGC team will be in
-              contact.
-            </p>
+            <p className="text-gray-500 mt-3">{blocks.paragraph_9}</p>
           </div>
           {submitted ? (
             <div
@@ -268,12 +235,9 @@ export default function PartnershipsPage() {
                 className="text-xl font-bold mb-2"
                 style={{ fontFamily: "var(--font-display)", color: "#1B2A56" }}
               >
-                Enquiry Received
+                {blocks.heading_13}
               </h3>
-              <p className="text-gray-600 text-sm">
-                Thank you for your interest in partnering with ASGC. We will
-                respond to your enquiry within 5 working days.
-              </p>
+              <p className="text-gray-600 text-sm">{blocks.paragraph_10}</p>
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-5">
@@ -395,5 +359,5 @@ export default function PartnershipsPage() {
         </div>
       </section>
     </div>
-  )
+  );
 }

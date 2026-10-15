@@ -1,17 +1,23 @@
-import { submitEnquiry } from "../lib/supabase"
-import { useState } from "react"
-
-const departments = [
-  "General Enquiry",
-  "Programme Participation",
-  "Media & Press",
-  "Partnership Enquiry",
-  "Research & Publications",
-  "Ambassador Ahmed Sule – Professional Enquiry",
-  "Other",
-]
+import { safeLink } from "../lib/safeLink";
+import { useSettings } from "../lib/useSettings";
+import { usePageData } from "../lib/usePageData";
+import type { ContactPageData } from "../types/pages";
+import ContentStatus from "../components/ContentStatus";
+import { submitEnquiry } from "../lib/supabase";
+import { useState } from "react";
 
 export default function ContactPage() {
+  const { settings } = useSettings();
+  const {
+    page,
+    loading: pageLoading,
+    error: pageError,
+  } = usePageData<ContactPageData>("contact");
+  const blocks = page?.blocks ?? {};
+  const arrays = page?.arrays ?? {};
+  const values = page?.values ?? {};
+  const departments = arrays.departments ?? [];
+
   const [formData, setFormData] = useState({
     name: "",
     org: "",
@@ -19,29 +25,41 @@ export default function ContactPage() {
     phone: "",
     dept: "",
     message: "",
-  })
-  const [status, setStatus] = useState<"idle" | "success" | "error">("idle")
+  });
+  const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
 
-  const [sending, setSending] = useState(false)
-  const [submitError, setSubmitError] = useState("")
+  const [sending, setSending] = useState(false);
+  const [submitError, setSubmitError] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    if (sending) return
-    setSending(true)
-    setSubmitError("")
+    e.preventDefault();
+    if (sending) return;
+    setSending(true);
+    setSubmitError("");
     try {
-      await submitEnquiry("contact", formData)
-      setStatus("success")
+      await submitEnquiry("contact", formData);
+      setStatus("success");
     } catch (error) {
       setSubmitError(
         error instanceof Error ? error.message : "Please try again.",
-      )
+      );
     } finally {
-      setSending(false)
+      setSending(false);
     }
-  }
+  };
 
+  if (!page)
+    return (
+      <div className="pt-28 min-h-[50vh]">
+        <ContentStatus
+          loading={pageLoading}
+          error={
+            pageError ||
+            (!pageLoading ? "This page has no published content yet." : "")
+          }
+        />
+      </div>
+    );
   return (
     <div className="pt-20">
       {/* Header */}
@@ -59,11 +77,10 @@ export default function ContactPage() {
             className="text-4xl md:text-5xl font-bold text-white mb-4"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            Contact ASGC
+            {blocks.heading_5}
           </h1>
           <p className="text-white/60 text-lg max-w-2xl">
-            The ASGC team welcomes enquiries from governments, institutions,
-            businesses, scholars and the public.
+            {blocks.paragraph_1}
           </p>
         </div>
       </div>
@@ -103,8 +120,7 @@ export default function ContactPage() {
                   </svg>
                 ),
                 label: "Address",
-                content:
-                  "House 18A, Idris Salmaho Street,\noff Lovett Close, Life Camp,\nAbuja, Nigeria",
+                content: settings?.address ?? "",
               },
               {
                 icon: (
@@ -123,8 +139,8 @@ export default function ContactPage() {
                   </svg>
                 ),
                 label: "General Enquiries",
-                content: "info@asgc.us.com",
-                href: "mailto:info@asgc.us.com",
+                content: settings?.email ?? "",
+                href: `mailto:${settings?.email ?? ""}`,
               },
               {
                 icon: (
@@ -143,8 +159,8 @@ export default function ContactPage() {
                   </svg>
                 ),
                 label: "CEO",
-                content: "ceo@asgc.us.com",
-                href: "mailto:ceo@asgc.us.com",
+                content: settings?.ceoEmail ?? "",
+                href: `mailto:${settings?.ceoEmail ?? ""}`,
               },
               {
                 icon: (
@@ -163,8 +179,8 @@ export default function ContactPage() {
                   </svg>
                 ),
                 label: "Telephone",
-                content: "+234 805 757 6575",
-                href: "tel:+2348057576575",
+                content: settings?.phone ?? "",
+                href: `tel:${(settings?.phone ?? "").replace(/[^+\d]/g, "")}`,
               },
             ].map((item) => (
               <div key={item.label} className="flex gap-4">
@@ -209,11 +225,12 @@ export default function ContactPage() {
                 Follow ASGC
               </p>
               <div className="flex gap-3">
-                {["Twitter / X", "LinkedIn", "Facebook", "Instagram"].map(
-                  (sn) => (
+                {(["twitter", "linkedin", "facebook", "instagram"] as const)
+                  .filter((sn) => safeLink(settings?.[sn]))
+                  .map((sn) => (
                     <a
                       key={sn}
-                      href="#"
+                      href={safeLink(settings?.[sn])}
                       className="w-10 h-10 rounded-sm flex items-center justify-center text-xs font-bold transition-all hover:opacity-80"
                       style={{ backgroundColor: "#1B2A56", color: "#B8963E" }}
                       title={sn}
@@ -221,8 +238,7 @@ export default function ContactPage() {
                     >
                       {sn[0]}
                     </a>
-                  ),
-                )}
+                  ))}
               </div>
             </div>
 
@@ -255,11 +271,14 @@ export default function ContactPage() {
                     d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
                   />
                 </svg>
-                <p className="text-sm text-gray-500">
-                  Life Camp, Abuja, Nigeria
-                </p>
+                <p className="text-sm text-gray-500">{blocks.paragraph_2}</p>
                 <a
-                  href="https://maps.google.com/?q=Life+Camp+Abuja+Nigeria"
+                  href={
+                    settings?.address
+                      ? "https://maps.google.com/?q=" +
+                        encodeURIComponent(settings.address)
+                      : undefined
+                  }
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-xs font-semibold"
@@ -281,12 +300,9 @@ export default function ContactPage() {
                 className="text-2xl font-bold mb-2"
                 style={{ fontFamily: "var(--font-display)", color: "#1B2A56" }}
               >
-                Send a Message
+                {blocks.heading_6}
               </h2>
-              <p className="text-sm text-gray-500 mb-8">
-                Complete the form below and a member of the ASGC team will
-                respond promptly.
-              </p>
+              <p className="text-sm text-gray-500 mb-8">{blocks.paragraph_3}</p>
 
               {status === "success" ? (
                 <div
@@ -306,15 +322,15 @@ export default function ContactPage() {
                       color: "#1B2A56",
                     }}
                   >
-                    Message Sent
+                    {blocks.heading_7}
                   </h3>
                   <p className="text-sm text-gray-600">
-                    Thank you, {formData.name}. We will respond to your message
-                    within 3–5 working days.
+                    Thank you, {formData.name}
+                    {blocks.paragraph_4}
                   </p>
                   <button
                     onClick={() => {
-                      setStatus("idle")
+                      setStatus("idle");
                       setFormData({
                         name: "",
                         org: "",
@@ -322,7 +338,7 @@ export default function ContactPage() {
                         phone: "",
                         dept: "",
                         message: "",
-                      })
+                      });
                     }}
                     className="mt-6 text-sm font-semibold"
                     style={{ color: "#1B2A56" }}
@@ -452,5 +468,5 @@ export default function ContactPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }

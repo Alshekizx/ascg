@@ -1,81 +1,53 @@
-import { Link } from "react-router-dom"
-import AnimatedStatistic from "../components/AnimatedStatistic"
-import { articles as initialArticles } from "../data/articles"
-import { useContent } from "../lib/useContent"
-import ContentStatus from "../components/ContentStatus"
-const logoImg = "/ASGC_colored_logo.png"
-
-const heroImg =
-  "https://images.unsplash.com/photo-1590274853856-f22d5ee3d228?w=1800&h=900&fit=crop&auto=format"
-const meetingImg =
-  "https://images.unsplash.com/photo-1739298061707-cefee19941b7?w=800&h=600&fit=crop&auto=format"
-const diplomacyImg =
-  "https://images.unsplash.com/photo-1633095975779-fd354aa0dc95?w=800&h=600&fit=crop&auto=format"
-const tradeImg =
-  "https://images.unsplash.com/photo-1739298061740-5ed03045b280?w=800&h=600&fit=crop&auto=format"
-
-const mandateItems = [
-  {
-    icon: "🤝",
-    title: "Advance Diplomacy & Dialogue",
-    desc: "Convening diplomatic missions, public institutions and civil society to address shared challenges and strengthen international cooperation.",
-  },
-  {
-    icon: "📦",
-    title: "Promote Inclusive Trade",
-    desc: "Research, knowledge sharing and programmes helping entrepreneurs and small businesses access regional and international opportunities.",
-  },
-  {
-    icon: "💼",
-    title: "Encourage Responsible Investment",
-    desc: "Connecting development needs with partners committed to ethical practices, job creation and community benefit.",
-  },
-  {
-    icon: "📊",
-    title: "Support Informed Policymaking",
-    desc: "Independent research, policy dialogue and publications on diplomacy, trade, investment and sustainable development.",
-  },
-  {
-    icon: "🎓",
-    title: "Build Skills & Leadership",
-    desc: "Training, mentorship and exchanges in negotiation, economic diplomacy and entrepreneurship, particularly for young people and women.",
-  },
-  {
-    icon: "🌐",
-    title: "Develop Strategic Partnerships",
-    desc: "Working with universities, development organisations, diplomatic institutions, diaspora networks and the private sector.",
-  },
-]
-
-const upcomingEvents = [
-  {
-    date: "Oct 15, 2026",
-    title: "Nigeria–Gulf Cooperation Forum",
-    location: "Abuja, Nigeria",
-    type: "Forum",
-  },
-  {
-    date: "Nov 3, 2026",
-    title: "Africa Trade & Investment Symposium",
-    location: "Lagos, Nigeria",
-    type: "Symposium",
-  },
-  {
-    date: "Nov 28, 2026",
-    title: "ASGC Annual Diplomacy Lecture",
-    location: "Abuja, Nigeria",
-    type: "Lecture",
-  },
-]
+import { useStatistics } from "../lib/useStatistics";
+import { useSettings } from "../lib/useSettings";
+import type { Leader } from "../types/content";
+import type { Event } from "../types/content";
+import type { Article } from "../types/content";
+import { usePageData } from "../lib/usePageData";
+import type { HomePageData } from "../types/pages";
+import { Link } from "react-router-dom";
+import AnimatedStatistic from "../components/AnimatedStatistic";
+import { useContent } from "../lib/useContent";
+import ContentStatus from "../components/ContentStatus";
 
 export default function HomePage() {
-  const {
-    items: articles,
-    loading,
-    error,
-  } = useContent("news", initialArticles)
-  const newsItems = articles.slice(0, 3)
+  const counts = useStatistics();
+  const { settings } = useSettings();
+  const { items: leaders } = useContent<Leader>("leadership");
+  const founder = leaders.find((leader) => leader.founder);
 
+  const { items: events } = useContent<Event>("event");
+  const upcomingEvents = events.filter((event) => !event.past);
+
+  const {
+    page,
+    loading: pageLoading,
+    error: pageError,
+  } = usePageData<HomePageData>("home");
+  const blocks = page?.blocks ?? {};
+  const arrays = page?.arrays ?? {};
+  const values = page?.values ?? {};
+  const mandateItems = arrays.mandateItems ?? [];
+  const heroImg = values.heroImg ?? "";
+  const meetingImg = values.meetingImg ?? "";
+  const diplomacyImg = values.diplomacyImg ?? "";
+  const tradeImg = values.tradeImg ?? "";
+
+  const { items: articles, loading, error } = useContent<Article>("news");
+  const newsItems = articles.slice(0, 3);
+
+  if (!page)
+    return (
+      <div className="pt-28 min-h-[50vh]">
+        <ContentStatus
+          loading={pageLoading}
+          error={
+            pageError ||
+            (!pageLoading ? "This page has no published content yet." : "")
+          }
+        />
+      </div>
+    );
   return (
     <div>
       <ContentStatus loading={loading} error={error} />
@@ -107,22 +79,22 @@ export default function HomePage() {
 
         <div className="relative z-10 max-w-7xl mx-auto px-6 py-32 text-center">
           <img
-            src={logoImg}
+            src={settings?.primaryLogo}
             alt="ASGC Logo"
             className="w-36 h-36 object-contain mx-auto mb-8 bg-white rounded-xl p-3 shadow-xl"
           />
           <p className="section-label mb-4" style={{ color: "#B8963E" }}>
-            Abuja, Nigeria · Est. 2024
+            {blocks.paragraph_1}
           </p>
           <h1
             className="text-4xl md:text-6xl lg:text-7xl font-bold text-white leading-tight mb-6"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            Ahmed Sule Global Centre
+            {blocks.heading_2}
             <br />
-            <span style={{ color: "#D4AE5A" }}>for Diplomacy, Trade</span>
+            <span style={{ color: "#D4AE5A" }}>{blocks.heading_3}</span>
             <br />
-            and Investment
+            {blocks.heading_21}
           </h1>
           <div className="flex items-center justify-center gap-4 mb-8">
             <div className="h-px w-16 bg-amber-600/40" />
@@ -130,15 +102,12 @@ export default function HomePage() {
               className="text-base md:text-lg italic"
               style={{ color: "#D4AE5A", fontFamily: "var(--font-display)" }}
             >
-              Connecting Nations. Advancing Trade. Inspiring Investment.
+              {blocks.paragraph_4}
             </p>
             <div className="h-px w-16 bg-amber-600/40" />
           </div>
           <p className="text-white/70 text-base md:text-lg max-w-2xl mx-auto mb-10 leading-relaxed">
-            An independent, nonpartisan, nonprofit organisation advancing
-            international cooperation, inclusive economic development and
-            peaceful relations through diplomacy, trade and responsible
-            investment.
+            {blocks.paragraph_5}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
@@ -195,27 +164,30 @@ export default function HomePage() {
                 className="text-3xl md:text-4xl font-bold leading-snug mb-6"
                 style={{ fontFamily: "var(--font-display)", color: "#1B2A56" }}
               >
-                A Centre for International Cooperation and Sustainable
-                Development
+                {blocks.heading_6}
               </h2>
               <p className="text-gray-600 leading-relaxed mb-4">
-                The Ahmed Sule Global Centre for Diplomacy, Trade and Investment
-                is conceived as an independent, nonpartisan, nonprofit
-                organisation dedicated to advancing international cooperation,
-                inclusive economic development and peaceful relations.
+                {blocks.paragraph_7}
               </p>
               <p className="text-gray-600 leading-relaxed mb-8">
-                Through research, capacity building and strategic partnerships,
-                ASGC delivers measurable public benefit to Nigeria, Africa and
-                the global community.
+                {blocks.paragraph_8}
               </p>
               <div className="grid grid-cols-2 gap-6 mb-8">
-                {[
-                  { val: "6", label: "Mandate Areas" },
-                  { val: "50+", label: "Partner Countries" },
-                  { val: "20+", label: "Active Programmes" },
-                  { val: "500+", label: "Beneficiaries" },
-                ].map((stat) => (
+                {(counts
+                  ? [
+                      { val: String(counts.mandates), label: "Mandate Areas" },
+                      {
+                        val: String(counts.partners),
+                        label: "Partner Organisations",
+                      },
+                      { val: String(counts.programmes), label: "Programmes" },
+                      {
+                        val: String(counts.registrations),
+                        label: "Confirmed Registrations",
+                      },
+                    ]
+                  : []
+                ).map((stat) => (
                   <AnimatedStatistic
                     key={stat.label}
                     value={stat.val}
@@ -265,7 +237,7 @@ export default function HomePage() {
                   className="text-sm italic text-white leading-relaxed"
                   style={{ fontFamily: "var(--font-display)" }}
                 >
-                  "Connecting Nations. Advancing Trade. Inspiring Investment."
+                  {blocks.paragraph_9}
                 </p>
               </div>
             </div>
@@ -283,30 +255,11 @@ export default function HomePage() {
               className="text-3xl md:text-4xl font-bold"
               style={{ fontFamily: "var(--font-display)", color: "#1B2A56" }}
             >
-              Three Pillars of ASGC
+              {blocks.heading_10}
             </h2>
           </div>
           <div className="grid md:grid-cols-3 gap-6">
-            {[
-              {
-                title: "Diplomacy",
-                img: diplomacyImg,
-                desc: "Convening diplomatic missions, governments, institutions and civil society to address shared challenges and strengthen international cooperation across Nigeria and Africa.",
-                to: "/our-work",
-              },
-              {
-                title: "Trade",
-                img: tradeImg,
-                desc: "Undertaking research, knowledge sharing and programmes that help entrepreneurs and small businesses access regional and international trade opportunities.",
-                to: "/our-work",
-              },
-              {
-                title: "Investment",
-                img: meetingImg,
-                desc: "Connecting development needs with partners committed to ethical practices, job creation, environmental responsibility and community benefit.",
-                to: "/our-work",
-              },
-            ].map((pillar) => (
+            {(arrays.items_2 ?? []).map((pillar) => (
               <Link
                 key={pillar.title}
                 to={pillar.to}
@@ -378,16 +331,14 @@ export default function HomePage() {
                   className="text-xl font-bold text-white"
                   style={{ fontFamily: "var(--font-display)" }}
                 >
-                  Our Vision
+                  {blocks.heading_22}
                 </h3>
               </div>
               <p
                 className="text-white/80 leading-relaxed text-lg italic"
                 style={{ fontFamily: "var(--font-display)" }}
               >
-                "A peaceful, connected and prosperous global community where
-                cooperation creates inclusive opportunities and shared
-                progress."
+                {blocks.paragraph_11}
               </p>
             </div>
             <div
@@ -406,14 +357,11 @@ export default function HomePage() {
                   className="text-xl font-bold text-white"
                   style={{ fontFamily: "var(--font-display)" }}
                 >
-                  Our Mission
+                  {blocks.heading_23}
                 </h3>
               </div>
               <p className="text-white/80 leading-relaxed">
-                To serve Nigeria, Africa and the global community by advancing
-                diplomatic dialogue, inclusive trade and responsible investment
-                through research, capacity building and strategic partnerships
-                that deliver measurable public benefit.
+                {blocks.paragraph_12}
               </p>
             </div>
           </div>
@@ -430,11 +378,10 @@ export default function HomePage() {
               className="text-3xl md:text-4xl font-bold"
               style={{ fontFamily: "var(--font-display)", color: "#1B2A56" }}
             >
-              Six Areas of Mandate
+              {blocks.heading_13}
             </h2>
             <p className="text-gray-500 max-w-xl mx-auto mt-3">
-              ASGC's mandate guides every programme, publication and partnership
-              the Centre undertakes.
+              {blocks.paragraph_14}
             </p>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -459,7 +406,9 @@ export default function HomePage() {
                     color: "#1B2A56",
                   }}
                 >
-                  {i + 1}. {item.title}
+                  {i + 1}
+                  {blocks.heading_24}
+                  {item.title}
                 </h3>
                 <p className="text-sm text-gray-600 leading-relaxed">
                   {item.desc}
@@ -489,8 +438,8 @@ export default function HomePage() {
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div className="relative">
               <img
-                src="/amb_sule_photo.png"
-                alt="Ambassador Ahmed Sule"
+                src={founder?.img}
+                alt={founder?.name}
                 className="rounded-sm w-full object-cover"
                 style={{ height: "500px" }}
               />
@@ -499,13 +448,13 @@ export default function HomePage() {
                 style={{ backgroundColor: "#B8963E" }}
               >
                 <p className="text-white text-xs font-semibold uppercase tracking-wider mb-1">
-                  Founder & CEO
+                  {founder?.position}
                 </p>
                 <p
                   className="text-white font-bold text-sm"
                   style={{ fontFamily: "var(--font-display)" }}
                 >
-                  Ambassador Ahmed Sule
+                  {founder?.name}
                 </p>
               </div>
             </div>
@@ -516,27 +465,18 @@ export default function HomePage() {
                 className="text-3xl md:text-4xl font-bold leading-snug mb-6"
                 style={{ fontFamily: "var(--font-display)", color: "#1B2A56" }}
               >
-                Ambassador Ahmed Sule
+                {founder?.name}
               </h2>
               <p
                 className="text-xs uppercase tracking-widest mb-4 font-semibold"
                 style={{ color: "#B8963E" }}
               >
-                Founder & Chief Executive Officer
+                {founder?.position}
               </p>
               <p className="text-gray-600 leading-relaxed mb-4">
-                Ambassador Ahmed Sule is a senior career diplomat with extensive
-                experience in foreign policy, economic diplomacy and high-level
-                international engagement. A Former High Commissioner of Nigeria
-                to India, Bangladesh, Sri Lanka and Nepal.
+                {founder?.biography}
               </p>
-              <p className="text-gray-600 leading-relaxed mb-6">
-                His postings have included Riyadh, New Delhi, Dhaka, Kathmandu,
-                Colombo, Ottawa, London and the Permanent Mission of Nigeria to
-                the United Nations in New York. He has facilitated investment
-                pledges valued at approximately US$14 billion and played key
-                roles in bilateral agreements across multiple continents.
-              </p>
+
               <Link
                 to="/founder"
                 className="inline-flex items-center gap-2 text-sm font-semibold transition-all hover:gap-3"
@@ -573,7 +513,7 @@ export default function HomePage() {
                 className="text-3xl font-bold"
                 style={{ fontFamily: "var(--font-display)", color: "#1B2A56" }}
               >
-                News & Insights
+                {blocks.heading_25}
               </h2>
             </div>
             <Link
@@ -656,7 +596,7 @@ export default function HomePage() {
                 className="text-3xl font-bold"
                 style={{ fontFamily: "var(--font-display)", color: "#1B2A56" }}
               >
-                Upcoming Events
+                {blocks.heading_26}
               </h2>
             </div>
             <Link
@@ -771,12 +711,10 @@ export default function HomePage() {
             className="text-3xl md:text-4xl font-bold text-white mb-4"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            Partner With ASGC
+            {blocks.heading_27}
           </h2>
           <p className="text-white/70 mb-8 leading-relaxed">
-            Whether you are a government institution, university, business,
-            development organisation or diaspora network, ASGC welcomes
-            purposeful partnerships that serve the public good.
+            {blocks.paragraph_20}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
@@ -805,5 +743,5 @@ export default function HomePage() {
         </div>
       </section>
     </div>
-  )
+  );
 }
