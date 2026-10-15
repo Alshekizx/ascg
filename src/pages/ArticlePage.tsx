@@ -13,7 +13,6 @@ export default function ArticlePage() {
 
   useEffect(() => {
     setShareStatus("");
-    window.scrollTo({ top: 0, behavior: "instant" });
   }, [slug]);
   useEffect(() => {
     if (loading) return;

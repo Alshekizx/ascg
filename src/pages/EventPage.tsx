@@ -11,7 +11,6 @@ export default function EventPage() {
   const event = items.find((item) => item.slug === slug || item.id === slug);
   const [registering, setRegistering] = useState(false);
   useEffect(() => {
-    window.scrollTo(0, 0);
     setRegistering(false);
   }, [slug]);
 
