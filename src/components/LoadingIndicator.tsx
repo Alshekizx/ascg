@@ -1,10 +1,11 @@
-import { useEffect, useRef } from 'react';
+import { useLayoutEffect, useRef } from 'react';
 
 /** Controls the document loader, which is visible before React downloads. */
 export default function LoadingIndicator({ navigationKey }: { navigationKey: string }) {
   const firstRender = useRef(true);
 
-  useEffect(() => {
+  // Cover route changes before the browser paints the next page.
+  useLayoutEffect(() => {
     const loader = document.getElementById('asgc-loader');
     if (!loader) return;
     let timer: ReturnType<typeof setTimeout>;
