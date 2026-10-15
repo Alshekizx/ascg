@@ -624,7 +624,7 @@ export default function HomePage() {
             {upcomingEvents.map((ev) => (
               <Link
                 key={ev.title}
-                to="/events"
+                to={`/events/${encodeURIComponent(ev.slug || ev.id)}`}
                 className="flex items-center gap-6 p-6 rounded-sm transition-all hover:shadow-md group"
                 style={{ backgroundColor: "#fff", border: "1px solid #EDE9E0" }}
               >
@@ -676,19 +676,9 @@ export default function HomePage() {
                     {ev.location}
                   </p>
                 </div>
-                <svg
-                  className="w-5 h-5 text-gray-300 group-hover:text-amber-600 flex-shrink-0 transition-colors"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M17 8l4 4m0 0l-4 4m4-4H3"
-                  />
-                </svg>
+                <span className="text-sm font-semibold text-[#1B2A56] shrink-0">
+                  View details →
+                </span>
               </Link>
             ))}
           </div>

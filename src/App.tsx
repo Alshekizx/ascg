@@ -11,6 +11,7 @@ import FounderPage from "./pages/FounderPage";
 import ProgrammesPage from "./pages/ProgrammesPage";
 import NewsPage from "./pages/NewsPage";
 import ArticlePage from "./pages/ArticlePage";
+import EventPage from "./pages/EventPage";
 import EventsPage from "./pages/EventsPage";
 import PublicationsPage from "./pages/PublicationsPage";
 import MediaPage from "./pages/MediaPage";
@@ -48,6 +49,7 @@ function Layout() {
           <Route path="/news" element={<NewsPage />} />
           <Route path="/news/:slug" element={<ArticlePage />} />
           <Route path="/events" element={<EventsPage />} />
+          <Route path="/events/:slug" element={<EventPage />} />
           <Route path="/publications" element={<PublicationsPage />} />
           <Route path="/media" element={<MediaPage />} />
           <Route path="/partnerships" element={<PartnershipsPage />} />
