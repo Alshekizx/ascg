@@ -1,3 +1,4 @@
+import PhoneLinks from "../components/PhoneLinks";
 import { safeLink } from "../lib/safeLink";
 import { useSettings } from "../lib/useSettings";
 import { useState } from "react";
@@ -275,12 +276,9 @@ export default function Footer() {
                   />
                 </svg>
                 <div className="text-xs text-white/60">
-                  <a
-                    href={`tel:${(settings?.phone ?? "").replace(/[^+\d]/g, "")}`}
+                  <PhoneLinks phone={settings?.phone}
                     className="hover:text-white transition-colors block"
-                  >
-                    {settings?.phone}
-                  </a>
+                   />
                 </div>
               </div>
             </div>

@@ -1,3 +1,4 @@
+import PhoneLinks from "../components/PhoneLinks";
 import { useContent } from "../lib/useContent";
 import type { Leader } from "../types/content";
 import { useSettings } from "../lib/useSettings";
@@ -229,13 +230,10 @@ export default function FounderPage() {
               >
                 {settings?.ceoEmail}
               </a>
-              <a
-                href={`tel:${(settings?.phone ?? "").replace(/[^+\d]/g, "")}`}
+              <PhoneLinks phone={settings?.phone}
                 className="inline-flex items-center gap-2 px-6 py-2.5 text-sm font-semibold rounded border"
                 style={{ borderColor: "rgba(255,255,255,0.3)", color: "#fff" }}
-              >
-                {settings?.phone}
-              </a>
+               />
             </div>
           </div>
         </div>

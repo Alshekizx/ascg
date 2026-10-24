@@ -1,3 +1,4 @@
+import PhoneLinks from "../components/PhoneLinks";
 import { safeLink } from "../lib/safeLink";
 import { useSettings } from "../lib/useSettings";
 import { usePageData } from "../lib/usePageData";
@@ -200,7 +201,11 @@ export default function ContactPage() {
                   >
                     {item.label}
                   </p>
-                  {item.href ? (
+                  {item.label === "Telephone" ? (
+                    <div className="flex flex-col gap-1">
+                      <PhoneLinks phone={settings?.phone} className="text-sm text-gray-600 hover:text-amber-700" />
+                    </div>
+                  ) : item.href ? (
                     <a
                       href={item.href}
                       className="text-sm text-gray-600 hover:text-amber-700 whitespace-pre-line"

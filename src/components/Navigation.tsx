@@ -1,3 +1,4 @@
+import PhoneLinks from "../components/PhoneLinks";
 import { useSettings } from "../lib/useSettings";
 import { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
@@ -227,12 +228,9 @@ export default function Navigation() {
                 {settings?.email}
               </a>
               <span className="text-white/30">|</span>
-              <a
-                href={`tel:${(settings?.phone ?? "").replace(/[^+\d]/g, "")}`}
+              <PhoneLinks phone={settings?.phone}
                 className="text-xs text-white/60 hover:text-amber-300 transition-colors"
-              >
-                {settings?.phone}
-              </a>
+               />
             </div>
           </div>
         </div>
