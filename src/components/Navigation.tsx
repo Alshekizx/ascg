@@ -257,6 +257,9 @@ export default function Navigation() {
                 <div className="text-white/60 text-[10px] leading-tight uppercase tracking-wider">
                   {settings?.shortName}
                 </div>
+                <div className="text-white/60 text-[10px] leading-tight">
+                  for Diplomacy, Trade and Investment
+                </div>
               </div>
             </Link>
 
