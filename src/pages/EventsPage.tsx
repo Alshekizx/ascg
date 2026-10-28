@@ -1,3 +1,4 @@
+import { siteImage } from "../lib/siteImage";
 import { Link } from "react-router-dom";
 import EventRegistration from "../components/EventRegistration";
 import { useContent } from "../lib/useContent";
@@ -83,7 +84,7 @@ export default function EventsPage() {
                 style={{ border: "1px solid #EDE9E0" }}
               >
                 <img
-                  src={ev.img}
+                  src={siteImage(ev.id)}
                   alt={ev.title}
                   className="w-full lg:w-64 h-48 lg:h-auto object-cover"
                 />
@@ -188,7 +189,7 @@ export default function EventsPage() {
                 style={{ border: "1px solid #EDE9E0" }}
               >
                 <img
-                  src={ev.img}
+                  src={siteImage(ev.id)}
                   alt={ev.title}
                   className="w-full h-44 object-cover opacity-80"
                 />

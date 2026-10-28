@@ -1,3 +1,4 @@
+import { siteImage } from "../lib/siteImage";
 import PhoneLinks from "../components/PhoneLinks";
 import { useContent } from "../lib/useContent";
 import type { Leader } from "../types/content";
@@ -47,7 +48,7 @@ export default function FounderPage() {
           <div className="lg:w-1/3 flex-shrink-0">
             <div className="relative">
               <img
-                src={founder?.img}
+                src={siteImage(founder?.id, 3)}
                 alt={founder?.name}
                 className="rounded-sm w-full object-cover shadow-2xl"
                 style={{ height: "420px", maxWidth: "340px" }}

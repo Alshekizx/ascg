@@ -1,3 +1,4 @@
+import { siteImage } from "../lib/siteImage";
 import { usePageData } from "../lib/usePageData";
 import type { OurWorkPageData } from "../types/pages";
 import ContentStatus from "../components/ContentStatus";
@@ -61,7 +62,7 @@ export default function OurWorkPage() {
             >
               <div className="lg:w-1/2">
                 <img
-                  src={area.img}
+                  src={siteImage(area.num, 2)}
                   alt={area.title}
                   className="rounded-sm w-full object-cover shadow-lg"
                   style={{ height: "360px" }}

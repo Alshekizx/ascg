@@ -1,3 +1,4 @@
+import { siteImage } from "../lib/siteImage";
 import type { Photo, Press, Speech, Coverage } from "../types/content";
 import { usePageData } from "../lib/usePageData";
 import type { MediaPageData } from "../types/pages";
@@ -105,10 +106,10 @@ export default function MediaPage() {
               <div
                 key={photo.img}
                 className="group relative overflow-hidden rounded-sm cursor-pointer"
-                onClick={() => setLightboxImg(photo.img)}
+                onClick={() => setLightboxImg(photo.id)}
               >
                 <img
-                  src={photo.img}
+                  src={siteImage(photo.id)}
                   alt={photo.caption}
                   className="w-full h-56 object-cover group-hover:scale-105 transition-transform duration-500"
                 />
@@ -289,7 +290,7 @@ export default function MediaPage() {
           onClick={() => setLightboxImg(null)}
         >
           <img
-            src={lightboxImg}
+            src={siteImage(lightboxImg)}
             alt="Gallery"
             className="max-w-full max-h-full object-contain rounded-sm"
           />

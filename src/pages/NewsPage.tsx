@@ -1,3 +1,4 @@
+import { siteImage } from "../lib/siteImage";
 import type { Article } from "../types/content";
 import { usePageData } from "../lib/usePageData";
 import type { NewsPageData } from "../types/pages";
@@ -83,7 +84,7 @@ export default function NewsPage() {
               style={{ border: "1px solid #EDE9E0" }}
             >
               <img
-                src={featured.img}
+                src={siteImage(featured.id)}
                 alt={featured.title}
                 className="w-full h-72 lg:h-auto object-cover"
               />
@@ -153,7 +154,7 @@ export default function NewsPage() {
               style={{ border: "1px solid #EDE9E0" }}
             >
               <img
-                src={article.img}
+                src={siteImage(article.id)}
                 alt={article.title}
                 className="w-full h-44 object-cover group-hover:scale-105 transition-transform duration-500"
               />

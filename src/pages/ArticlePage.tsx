@@ -1,3 +1,4 @@
+import { siteImage } from "../lib/siteImage";
 import type { Article } from "../types/content";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
@@ -118,14 +119,12 @@ export default function ArticlePage() {
 
         <figure className="max-w-6xl mx-auto px-6">
           <img
-            src={article.img
-              .replace(/w=\d+/, "w=1600")
-              .replace(/h=\d+/, "h=800")}
+            src={siteImage(article.id)}
             alt=""
             className="w-full aspect-[16/9] md:aspect-[2/1] object-cover rounded-sm"
           />
           <figcaption className="text-xs text-gray-500 border-b border-stone py-3">
-            Illustrative photography · Unsplash
+            ASGC photography
           </figcaption>
         </figure>
 
@@ -245,7 +244,7 @@ export default function ArticlePage() {
               >
                 <div className="overflow-hidden">
                   <img
-                    src={item.img}
+                    src={siteImage(item.id)}
                     alt=""
                     loading="lazy"
                     className="w-full aspect-[16/10] object-cover group-hover:scale-105 transition-transform duration-300"

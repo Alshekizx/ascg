@@ -1,3 +1,4 @@
+import { siteImage } from "../lib/siteImage";
 import type { Publication } from "../types/content";
 import { usePageData } from "../lib/usePageData";
 import type { PublicationsPageData } from "../types/pages";
@@ -153,7 +154,7 @@ export default function PublicationsPage() {
                   style={{ backgroundColor: "#1B2A56" }}
                 >
                   <img
-                    src={pub.img}
+                    src={siteImage(pub.id)}
                     alt={pub.title}
                     className="absolute inset-0 w-full h-full object-cover opacity-20"
                   />
