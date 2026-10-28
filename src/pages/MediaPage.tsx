@@ -1,4 +1,4 @@
-import { siteImage } from "../lib/siteImage";
+import { sitePhotos } from "../lib/sitePhotos";
 import type { Photo, Press, Speech, Coverage } from "../types/content";
 import { usePageData } from "../lib/usePageData";
 import type { MediaPageData } from "../types/pages";
@@ -37,6 +37,16 @@ export default function MediaPage() {
 
   const [activeTab, setActiveTab] = useState("Photos");
   const [lightboxImg, setLightboxImg] = useState<string | null>(null);
+  const [visiblePhotoCount, setVisiblePhotoCount] = useState(30);
+  const galleryPhotos = [
+    ...photos,
+    ...sitePhotos.map((img, index) => ({
+      id: `local-photo-${index}`,
+      img,
+      caption: "ASGC photo",
+      album: "ASGC Gallery",
+    })),
+  ];
 
   if (!page)
     return (
@@ -102,15 +112,16 @@ export default function MediaPage() {
       <div className="max-w-7xl mx-auto px-6 py-16">
         {activeTab === "Photos" && (
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {photos.map((photo) => (
+            {galleryPhotos.slice(0, visiblePhotoCount).map((photo) => (
               <div
-                key={photo.img}
+                key={photo.id}
                 className="group relative overflow-hidden rounded-sm cursor-pointer"
-                onClick={() => setLightboxImg(photo.id)}
+                onClick={() => setLightboxImg(photo.img)}
               >
                 <img
-                  src={siteImage(photo.id)}
+                  src={photo.img}
                   alt={photo.caption}
+                  loading="lazy"
                   className="w-full h-56 object-cover group-hover:scale-105 transition-transform duration-500"
                 />
                 <div
@@ -131,6 +142,16 @@ export default function MediaPage() {
                 </div>
               </div>
             ))}
+            {visiblePhotoCount < galleryPhotos.length && (
+              <button
+                type="button"
+                onClick={() => setVisiblePhotoCount((count) => count + 30)}
+                className="sm:col-span-2 lg:col-span-3 justify-self-center px-6 py-3 text-sm font-semibold text-white rounded-sm"
+                style={{ backgroundColor: "#1B2A56" }}
+              >
+                Load more photos
+              </button>
+            )}
           </div>
         )}
 
@@ -290,7 +311,7 @@ export default function MediaPage() {
           onClick={() => setLightboxImg(null)}
         >
           <img
-            src={siteImage(lightboxImg)}
+            src={lightboxImg}
             alt="Gallery"
             className="max-w-full max-h-full object-contain rounded-sm"
           />
