@@ -434,7 +434,7 @@ export default function HomePage() {
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div className="relative">
               <img
-                src={siteImage(founder?.id, 3)}
+                src={founder?.img}
                 alt={founder?.name}
                 className="rounded-sm w-full object-cover"
                 style={{ height: "500px" }}
