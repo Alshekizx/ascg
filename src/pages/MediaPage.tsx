@@ -1,4 +1,3 @@
-import { sitePhotos } from "../lib/sitePhotos";
 import type { Photo, Press, Speech, Coverage } from "../types/content";
 import { usePageData } from "../lib/usePageData";
 import type { MediaPageData } from "../types/pages";
@@ -38,15 +37,7 @@ export default function MediaPage() {
   const [activeTab, setActiveTab] = useState("Photos");
   const [lightboxImg, setLightboxImg] = useState<string | null>(null);
   const [visiblePhotoCount, setVisiblePhotoCount] = useState(30);
-  const galleryPhotos = [
-    ...photos,
-    ...sitePhotos.map((img, index) => ({
-      id: `local-photo-${index}`,
-      img,
-      caption: "ASGC photo",
-      album: "ASGC Gallery",
-    })),
-  ];
+  const galleryPhotos = photos;
 
   if (!page)
     return (
