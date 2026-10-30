@@ -1,3 +1,4 @@
+import { siteImage } from "../lib/siteImage";
 import { PartnerDirectory } from "../components/Directory";
 import { usePageData } from "../lib/usePageData";
 import type { PartnershipsPageData } from "../types/pages";
@@ -65,7 +66,7 @@ export default function PartnershipsPage() {
       <div
         className="py-20 px-6"
         style={{
-          background: "linear-gradient(135deg, #1B2A56 0%, #111B3A 100%)",
+          background: `linear-gradient(135deg, rgba(27,42,86,0.88) 0%, rgba(17,27,58,0.93) 100%), url("${siteImage(7)}") center/cover`,
         }}
       >
         <div className="max-w-7xl mx-auto">

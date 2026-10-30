@@ -1,4 +1,3 @@
-import { siteImage } from "../lib/siteImage";
 import { useParams, Link } from "react-router-dom";
 import { useContent } from "../lib/useContent";
 import { safeLink } from "../lib/safeLink";
@@ -32,7 +31,7 @@ export default function DynamicPage() {
       )}
       {safeLink(page.values?.img) && (
         <img
-          src={siteImage(page.slug)}
+          src={safeLink(page.values.img)}
           alt=""
           className="w-full rounded mb-8"
         />

@@ -33,7 +33,7 @@ export default function OurWorkPage() {
       <div
         className="py-20 px-6"
         style={{
-          background: "linear-gradient(135deg, #1B2A56 0%, #111B3A 100%)",
+          background: `linear-gradient(135deg, rgba(27,42,86,0.88) 0%, rgba(17,27,58,0.93) 100%), url("${siteImage(1)}") center/cover`,
         }}
       >
         <div className="max-w-7xl mx-auto">
@@ -62,7 +62,7 @@ export default function OurWorkPage() {
             >
               <div className="lg:w-1/2">
                 <img
-                  src={siteImage(area.num, 2)}
+                  src={area.img}
                   alt={area.title}
                   className="rounded-sm w-full object-cover shadow-lg"
                   style={{ height: "360px" }}

@@ -1,4 +1,3 @@
-import { siteImage } from "../lib/siteImage";
 import { useStatistics } from "../lib/useStatistics";
 import { useSettings } from "../lib/useSettings";
 import type { Leader } from "../types/content";
@@ -27,7 +26,10 @@ export default function HomePage() {
   } = usePageData<HomePageData>("home");
   const blocks = page?.blocks ?? {};
   const arrays = page?.arrays ?? {};
+  const values = page?.values ?? {};
   const mandateItems = arrays.mandateItems ?? [];
+  const heroImg = values.heroImg ?? "";
+  const meetingImg = values.meetingImg ?? "";
 
   const { items: articles, loading, error } = useContent<Article>("news");
   const newsItems = articles.slice(0, 3);
@@ -53,7 +55,7 @@ export default function HomePage() {
         style={{ backgroundColor: "#111B3A" }}
       >
         <img
-          src={siteImage("home-hero", 0)}
+          src={heroImg}
           alt="International flags"
           className="absolute inset-0 w-full h-full object-cover opacity-20"
         />
@@ -214,7 +216,7 @@ export default function HomePage() {
             </div>
             <div className="relative">
               <img
-                src={siteImage("home-meeting", 1)}
+                src={meetingImg}
                 alt="ASGC diplomatic meeting"
                 className="rounded-sm w-full object-cover"
                 style={{ height: "420px" }}
@@ -263,7 +265,7 @@ export default function HomePage() {
                 style={{ backgroundColor: "#1B2A56" }}
               >
                 <img
-                  src={siteImage(pillar.title, 2)}
+                  src={pillar.img}
                   alt={pillar.title}
                   className="w-full h-56 object-cover opacity-40 group-hover:opacity-50 group-hover:scale-105 transition-all duration-500"
                 />
@@ -545,7 +547,7 @@ export default function HomePage() {
                 }}
               >
                 <img
-                  src={siteImage(item.id, 4)}
+                  src={item.img}
                   alt={item.title}
                   className="w-full h-44 object-cover group-hover:scale-105 transition-transform duration-500"
                 />
@@ -687,7 +689,7 @@ export default function HomePage() {
         style={{ backgroundColor: "#1B2A56" }}
       >
         <div className="absolute inset-0 opacity-5">
-          <img src={siteImage("home-hero", 0)} alt="" className="w-full h-full object-cover" />
+          <img src={heroImg} alt="" className="w-full h-full object-cover" />
         </div>
         <div className="relative z-10 max-w-3xl mx-auto text-center">
           <p className="section-label mb-4" style={{ color: "#B8963E" }}>

@@ -1,4 +1,3 @@
-import { siteImage } from "../lib/siteImage";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import ContentStatus from "../components/ContentStatus";
@@ -61,7 +60,7 @@ export default function EventPage() {
       <article className="max-w-5xl mx-auto py-12 px-6">
         {event.img && (
           <img
-            src={siteImage(event.id)}
+            src={event.img}
             alt={event.title}
             className="w-full max-h-[32rem] object-cover rounded-sm mb-10"
           />

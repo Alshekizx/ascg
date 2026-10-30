@@ -52,7 +52,7 @@ export default function NewsPage() {
       <div
         className="py-20 px-6"
         style={{
-          background: "linear-gradient(135deg, #1B2A56 0%, #111B3A 100%)",
+          background: `linear-gradient(135deg, rgba(27,42,86,0.88) 0%, rgba(17,27,58,0.93) 100%), url("${siteImage(5)}") center/cover`,
         }}
       >
         <div className="max-w-7xl mx-auto">
@@ -84,7 +84,7 @@ export default function NewsPage() {
               style={{ border: "1px solid #EDE9E0" }}
             >
               <img
-                src={siteImage(featured.id)}
+                src={featured.img}
                 alt={featured.title}
                 className="w-full h-72 lg:h-auto object-cover"
               />
@@ -154,7 +154,7 @@ export default function NewsPage() {
               style={{ border: "1px solid #EDE9E0" }}
             >
               <img
-                src={siteImage(article.id)}
+                src={article.img}
                 alt={article.title}
                 className="w-full h-44 object-cover group-hover:scale-105 transition-transform duration-500"
               />

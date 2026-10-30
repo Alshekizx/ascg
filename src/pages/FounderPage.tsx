@@ -1,3 +1,4 @@
+import { siteImage } from "../lib/siteImage";
 import PhoneLinks from "../components/PhoneLinks";
 import { useContent } from "../lib/useContent";
 import type { Leader } from "../types/content";
@@ -40,7 +41,7 @@ export default function FounderPage() {
       <div
         className="py-20 px-6"
         style={{
-          background: "linear-gradient(135deg, #1B2A56 0%, #111B3A 100%)",
+          background: `linear-gradient(135deg, rgba(27,42,86,0.88) 0%, rgba(17,27,58,0.93) 100%), url("${siteImage(2)}") center/cover`,
         }}
       >
         <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-12 items-center">
