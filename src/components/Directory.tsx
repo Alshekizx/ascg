@@ -1,4 +1,3 @@
-import { siteImage } from "../lib/siteImage";
 import { useContent } from "../lib/useContent";
 import { safeLink } from "../lib/safeLink";
 import type { Leader, Partner } from "../types/content";
@@ -12,7 +11,7 @@ export function LeadershipDirectory() {
           <article key={item.id} className="bg-white border rounded p-6">
             {safeLink(item.img) && (
               <img
-                src={siteImage(item.id)}
+                src={safeLink(item.img)}
                 alt={item.name}
                 className="h-64 w-full object-cover object-top rounded mb-4"
               />
@@ -43,7 +42,7 @@ export function PartnerDirectory() {
           <article key={item.id} className="bg-white border rounded p-6">
             {safeLink(item.img) && (
               <img
-                src={siteImage(item.id)}
+                src={safeLink(item.img)}
                 alt={item.name}
                 className="h-20 max-w-full object-contain mb-4"
               />
