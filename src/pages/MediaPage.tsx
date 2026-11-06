@@ -13,7 +13,64 @@ const tabs = [
   "Press Releases",
   "Speeches",
   "Media Coverage",
-];
+ ];
+
+function getVideoEmbedUrl(value: string) {
+  try {
+    const url = new URL(value);
+    if (url.protocol !== "https:" && url.protocol !== "http:") return null;
+
+    const host = url.hostname.toLowerCase();
+    if (host === "youtu.be" || host.endsWith(".youtu.be")) {
+      const id = url.pathname.split("/").filter(Boolean)[0];
+      return id
+        ? `https://www.youtube-nocookie.com/embed/${encodeURIComponent(id)}`
+        : null;
+    }
+
+    if (
+      host === "youtube.com" ||
+      host.endsWith(".youtube.com") ||
+      host === "youtube-nocookie.com" ||
+      host.endsWith(".youtube-nocookie.com")
+    ) {
+      const parts = url.pathname.split("/").filter(Boolean);
+      const id =
+        url.searchParams.get("v") ||
+        (["embed", "shorts", "live"].includes(parts[0]) ? parts[1] : null);
+      return id
+        ? `https://www.youtube-nocookie.com/embed/${encodeURIComponent(id)}`
+        : null;
+    }
+
+    if (host === "vimeo.com" || host.endsWith(".vimeo.com")) {
+      const parts = url.pathname.split("/").filter(Boolean);
+      const id =
+        host === "player.vimeo.com" && parts[0] === "video"
+          ? parts[1]
+          : parts[0];
+      return id && /^\d+$/.test(id)
+        ? `https://player.vimeo.com/video/${id}`
+        : null;
+    }
+
+    return null;
+  } catch {
+    return null;
+  }
+}
+
+function isVideoFile(value: string) {
+  try {
+    const url = new URL(value);
+    return (
+      (url.protocol === "https:" || url.protocol === "http:") &&
+      /\.(mp4|webm|ogg)$/i.test(url.pathname)
+    );
+  } catch {
+    return false;
+  }
+}
 
 export default function MediaPage() {
   const {
@@ -152,27 +209,56 @@ export default function MediaPage() {
             {videos.length === 0 && (
               <p className="text-gray-500">{blocks.paragraph_2}</p>
             )}
-            {videos.map((video) => (
-              <article
-                key={video.title}
-                className="bg-white rounded border p-6"
-              >
-                <h3 className="font-bold mb-3">{video.title}</h3>
-                <p className="text-sm text-gray-600 mb-3">
-                  {video.description}
-                </p>
-                {safeLink(video.url) && (
-                  <a
-                    href={safeLink(video.url)}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-sm text-[#96790f]"
-                  >
-                    Watch Video →
-                  </a>
-                )}
-              </article>
-            ))}
+            {videos.map((video) => {
+              const embedUrl = getVideoEmbedUrl(video.url);
+              const isVideoFileUrl = isVideoFile(video.url);
+              const watchUrl = safeLink(video.url);
+
+              return (
+                <article
+                  key={video.title}
+                  className="bg-white rounded border overflow-hidden"
+                >
+                  {embedUrl ? (
+                    <iframe
+                      className="aspect-video w-full bg-black"
+                      src={embedUrl}
+                      title={video.title}
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                      allowFullScreen
+                      loading="lazy"
+                      referrerPolicy="strict-origin-when-cross-origin"
+                    />
+                  ) : isVideoFileUrl ? (
+                    <video
+                      className="aspect-video w-full bg-black"
+                      src={video.url}
+                      controls
+                      playsInline
+                      preload="metadata"
+                    >
+                      Your browser does not support HTML video.
+                    </video>
+                  ) : null}
+                  <div className="p-6">
+                    <h3 className="font-bold mb-3">{video.title}</h3>
+                    <p className="text-sm text-gray-600 mb-3">
+                      {video.description}
+                    </p>
+                    {watchUrl && (
+                      <a
+                        href={watchUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-sm text-[#96790f]"
+                      >
+                        Watch Video →
+                      </a>
+                    )}
+                  </div>
+                </article>
+              );
+            })}
           </div>
         )}
 
