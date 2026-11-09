@@ -1,17 +1,17 @@
 {
-  "description": "This platform offers a public-facing website and secure admin dashboard for ASGC, enhancing visibility and management of diplomatic initiatives and partnerships.",
+  "description": "Ahmed Sule Global Centre for Diplomacy, Trade and Investment is an independent, nonpartisan, nonprofit organisation serving Nigeria, Africa and the global community.",
   "robots": {
-    "index": false
+    "index": true
   },
   "accessibility": {
     "addBypassLinks": false,
     "ignoreReducedMotion": false
   },
-  "title": "ASGC",
+  "title": "Ahmed Sule Global Centre | Diplomacy, Trade and Investment",
   "icons": {
     "icon": "/ASGC_colored_logo.png"
   },
   "openGraph": {
-    "image": "/ASGC_White_Logo.png"
+    "image": "https://www.asgc.us.com/ASGC_colored_logo.png"
   }
 }
