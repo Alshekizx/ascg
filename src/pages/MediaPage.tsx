@@ -164,14 +164,14 @@ export default function MediaPage() {
             {galleryPhotos.slice(0, visiblePhotoCount).map((photo) => (
               <div
                 key={photo.id}
-                className="group relative overflow-hidden rounded-sm cursor-pointer"
+                className="group relative aspect-[4/3] overflow-hidden rounded-sm bg-gray-100 cursor-pointer"
                 onClick={() => setLightboxImg(photo.img)}
               >
                 <img
                   src={photo.img}
                   alt={photo.caption}
                   loading="lazy"
-                  className="w-full h-56 object-cover group-hover:scale-105 transition-transform duration-500"
+                  className="absolute inset-0 h-full w-full object-contain"
                 />
                 <div
                   className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity flex items-end"
