@@ -156,7 +156,9 @@ export default function FounderPage() {
               {blocks.heading_12}
             </h3>
             <div className="space-y-3 text-gray-600 leading-relaxed">
-              <p className="whitespace-pre-line">{founder?.biography}</p>
+              {[blocks.profile_1, blocks.profile_2, blocks.profile_3, blocks.profile_4, blocks.profile_5, blocks.profile_6, blocks.profile_7].filter(Boolean).map((paragraph) => (
+                <p key={paragraph} className="whitespace-pre-line">{paragraph}</p>
+              ))}
             </div>
           </div>
 
